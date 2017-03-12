@@ -1,3 +1,5 @@
-# Chat-Box 
+# Chat-Box
 
-Currently in Development
+A multi-thread chat box application using Polymer 2.0 and Firebase.
+
+Authentication through Google.

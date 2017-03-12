@@ -1,5 +1,5 @@
 {
-  "name": "Chat-Box",
+  "name": "chat-box",
   "license": "BSD-3-Clause",
   "devDependencies": {
     "eslint": "^3.12.0",

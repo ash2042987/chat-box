@@ -1,0 +1,28 @@
+<!-- IMPORTS -->
+<!-- POLYMER -->
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<!-- CUSTOM ELEMENTS -->
+<link rel="import" href="../shared-styles.html">
+
+<dom-module id="ceg-auth">
+  <template>
+
+    <!-- CONTENT -->
+    <firebase-app
+        api-key="YOUR_API_KEY"
+        auth-domain="YOUR_AUTH_DOMAIN"
+        database-url="YOUR_DATABASE_URL"
+        storage-bucket="YOUR_DATABASE_STORAGE_BUCKET">
+     </firebase-app>
+
+
+  </template>
+
+  <script>
+    class CegmagAuth extends Polymer.Element {
+      static get is() { return 'ceg-auth'; }
+    }
+
+    window.customElements.define(CegmagAuth.is, CegmagAuth);
+  </script>
+</dom-module>

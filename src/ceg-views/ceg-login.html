@@ -75,7 +75,7 @@
     <img id="profile-img" src="../../images/michael.jpg" alt="Michael Gee's Profile Picture">
     <p class="paragraph">Welcome to my Chat-Box Application!</p>
     <p class="paragraph">Please Sign In with your Google account to continue.</p>
-    <paper-button>
+    <paper-button on-tap="signIn">
       <img src="../../images/google-icon.png" alt="Google Logo">
       Sign In
     </paper-button>
@@ -89,7 +89,12 @@
 
   <script>
     class CegmagLogin extends Polymer.Element {
+
       static get is() { return 'ceg-login'; }
+
+      signIn(){
+        window.dispatchEvent(new CustomEvent('sign-in'))
+      }
     }
 
     window.customElements.define(CegmagLogin.is, CegmagLogin);

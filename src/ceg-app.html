@@ -1,22 +1,84 @@
 <!-- IMPORTS -->
 <!-- POLYMER -->
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<!-- POLYMERFIRE -->
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
 <!-- CUSTOM ELEMENTS -->
-<link rel="import" href="ceg-views/ceg-chat.html">
-<link rel="import" href="ceg-views/ceg-login.html">
-<link rel="import" href="shared-styles.html">
+  <!-- AUTH -->
+  <link rel="import" href="ceg-auth/ceg-auth.html">
+  <!-- VIEWS -->
+  <link rel="import" href="ceg-views/ceg-chat.html">
+  <link rel="import" href="ceg-views/ceg-login.html">
+  <!-- STYLES -->
+  <link rel="import" href="shared-styles.html">
 
 <dom-module id="ceg-app">
   <template>
 
-    <ceg-login></ceg-login>
+    <!-- FIREBASE -->
+    <ceg-auth></ceg-auth>
+
+    <firebase-auth
+        id="auth"
+        user="{{user}}"
+        provider="google"
+        signed-in="{{signedIn}}">
+    </firebase-auth>
+
+    <template is="dom-if" if="{{!user}}">
+      <ceg-login></ceg-login>
+    </template>
+
+    <template is="dom-if" if="{{user}}">
+      <ceg-chat></ceg-chat>
+    </template>
 
   </template>
 
   <script>
     class CegmagApp extends Polymer.Element {
 
+      constructor() {
+        super();
+        //EVENT LISTENERS
+        this.onSignIn = this.onSignIn.bind(this);
+        window.addEventListener('sign-in', this.onSignIn);
+
+        this.onSignOut = this.onSignOut.bind(this);
+        window.addEventListener('sign-out', this.onSignOut);
+    }
+
       static get is() { return 'ceg-app'; }
+
+      static get properties() {
+
+        return {
+          signedIn: Boolean,
+          user: Object
+        }
+
+      }
+
+      onSignIn(){
+        this.$.auth.signInWithPopup()
+        .then( (response) => {
+          console.log("Logged In Successfully!");
+        })
+        .catch( (error) => {
+          console.log("Error");
+          console.log(error)
+        });
+      }
+      onSignOut(){
+        this.$.auth.signOut()
+        .then( (response) => {
+          console.log("Logged Out Successfully!");
+        })
+        .catch( (error) => {
+          console.log("Error");
+          console.log(error)
+        });
+      }
 
 
     }

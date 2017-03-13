@@ -1,27 +1,140 @@
 <!-- IMPORTS -->
 <!-- POLYMER -->
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<!-- APP ELEMENTS -->
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<!-- IRON ELEMENTS -->
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
 <!-- CUSTOM ELEMENTS -->
-
+<link rel="import" href="../ceg-icons/ceg-icons.html">
 <link rel="import" href="../shared-styles.html">
 
 <dom-module id="ceg-chat">
   <template>
     <style include="shared-styles">
-      :host {
-        display: block;
+      #container {
+        max-width: 750px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
 
-        padding: 10px;
+      #chat-box {
+        width: 100%;
+        height: 500px;
+        background-color: #ffffff;
+      }
+
+      #thread-list {
+        width: 30%;
+        float: left;
+      }
+        #thread-list app-toolbar {
+          border-right: 1px solid white;
+        }
+        #thread-options {
+          border-right: 1px solid #2ECC71;
+          padding-top: 15px;
+          padding-bottom: 118%;
+        }
+        .thread-option {
+          margin-bottom: 15px;
+          font-size: 1.8em;
+          padding: 5px;
+          text-align: center;
+          cursor: pointer;
+        }
+          .iron-selected {
+            background-color: #2ECC71;
+            color: white;
+          }
+
+      #messages {
+        width: 70%;
+        float: right;
+      }
+
+      #messages app-toolbar, #thread-list app-toolbar {
+        background-color: #2ECC71;
+        color: white;
+      }
+
+      #sign-out {
+        font-size: 1.8em;
+        color: white;
+        cursor: pointer;
+        margin-top: 25px;
       }
     </style>
 
-    <h1>Chat Page</h1>
+    <div id="container">
+      <!-- CHAT-BOX -->
+      <div id="chat-box">
+        <!-- THREAD LIST CONTAINER -->
+        <div id="thread-list">
+          <app-toolbar>Threads</app-toolbar>
+
+          <div id="thread-options">
+
+            <iron-selector attr-for-selected="name" selected="[[selectedThread]]">
+              <div name="general" class="thread-option" on-tap="_onThreadChange">
+                <iron-icon icon="ceg-icons:people"></iron-icon>
+                General
+              </div>
+              <div name="comments" class="thread-option" on-tap="_onThreadChange">
+                <iron-icon icon="ceg-icons:comment"></iron-icon>
+                Comments
+              </div>
+              <div name="feedback" class="thread-option" on-tap="_onThreadChange">
+                <iron-icon icon="ceg-icons:feedback"></iron-icon>
+                Feedback
+              </div>
+            </iron-selector>
+
+          </div>
+
+        </div>
+        <!-- MESSAGES CONTAINER -->
+        <div id="messages">
+          <app-toolbar>Chat-Box - Current Thread</app-toolbar>
+        </div>
+
+      </div><!-- CHAT BOX DIV END -->
+
+      <div id="sign-out" on-tap="signOut">
+        <iron-icon icon="ceg-icons:arrow-back"></iron-icon>
+        Sign Out
+      </div>
+    </div><!-- CONTAINER END -->
 
   </template>
 
   <script>
-    class CegmagChat extends Polymer.Element {
+    class CegmagChat extends Polymer.LegacyElementMixin(Polymer.Element) {
+
       static get is() { return 'ceg-chat'; }
+
+      static get properties() {
+
+        return {
+          selectedThread: {
+            type: String
+          }
+        }
+
+      }
+
+      _onThreadChange(e) {
+        console.log(this.$.name);
+        //this.selectedThread = e.target.name;
+      }
+
+      signOut(){
+        window.dispatchEvent(new CustomEvent('sign-out'))
+      }
     }
 
     window.customElements.define(CegmagChat.is, CegmagChat);

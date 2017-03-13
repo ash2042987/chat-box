@@ -1,8 +1,9 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/my-app.html",
+  "shell": "src/ceg-app.html",
   "fragments": [
-    "src/ceg-pages/ceg-page.html"
+    "src/ceg-views/ceg-chat.html",
+    "src/ceg-views/ceg-login.html"
   ],
   "sources": [
     "src/**/*",

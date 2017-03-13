@@ -1,0 +1,97 @@
+<!-- IMPORTS -->
+<!-- POLYMER -->
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<!-- PAPER ELEMENTS -->
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<!-- CUSTOM ELEMENTS -->
+<link rel="import" href="../shared-styles.html">
+
+<dom-module id="ceg-login">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-height: 100vh;
+        color: white;
+      }
+
+      h1 {
+        margin-bottom: 10px;
+      }
+
+      a {
+        color: #2ECC71;
+      }
+        a:hover {
+          color: red;
+        }
+
+      #profile-img {
+        width: 150px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+      }
+      #github-img {
+        width: 75px;
+        float: right;
+      }
+
+      paper-button {
+        font-size: 2em;
+        background-color: #2ECC71;
+        margin-top: 10px;
+        padding: 15px 50px 15px 50px;
+      }
+        paper-button img {
+          width: 25px;
+          padding-right: 5px;
+        }
+
+      #github p {
+        display: inline;
+        padding-top: 25px;
+        float:left;
+      }
+
+      /* MEDIA QUERIES */
+      @media screen and (max-width: 450px){
+        #github p {
+          display: block;
+          float: none;
+          text-align: center;
+        }
+        #github-img {
+          float: none;
+        }
+      }
+
+    </style>
+
+    <h1>Michael's Chat-Box</h1>
+    <img id="profile-img" src="../../images/michael.jpg" alt="Michael Gee's Profile Picture">
+    <p class="paragraph">Welcome to my Chat-Box Application!</p>
+    <p class="paragraph">Please Sign In with your Google account to continue.</p>
+    <paper-button>
+      <img src="../../images/google-icon.png" alt="Google Logo">
+      Sign In
+    </paper-button>
+
+    <div id="github">
+      <p class="paragraph">View the source code on Github <a href="https://github.com/michaelgee22/chat-box" target="_blank">here</a></p>
+      <img id="github-img" src="../../images/github.svg" alt="Github Logo">
+    </div>
+
+  </template>
+
+  <script>
+    class CegmagLogin extends Polymer.Element {
+      static get is() { return 'ceg-login'; }
+    }
+
+    window.customElements.define(CegmagLogin.is, CegmagLogin);
+  </script>
+</dom-module>

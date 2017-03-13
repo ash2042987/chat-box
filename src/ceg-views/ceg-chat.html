@@ -2,9 +2,10 @@
 <!-- POLYMER -->
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <!-- CUSTOM ELEMENTS -->
+
 <link rel="import" href="../shared-styles.html">
 
-<dom-module id="ceg-page">
+<dom-module id="ceg-chat">
   <template>
     <style include="shared-styles">
       :host {
@@ -14,15 +15,15 @@
       }
     </style>
 
-    <!-- CONTENT -->
+    <h1>Chat Page</h1>
 
   </template>
 
   <script>
-    class CegmagPage extends Polymer.Element {
-      static get is() { return 'ceg-page'; }
+    class CegmagChat extends Polymer.Element {
+      static get is() { return 'ceg-chat'; }
     }
 
-    window.customElements.define(CegmagPage.is, CegmagPage);
+    window.customElements.define(CegmagChat.is, CegmagChat);
   </script>
 </dom-module>

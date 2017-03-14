@@ -3,6 +3,11 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <!-- APP ELEMENTS -->
 <link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<!-- PAPER ELEMENTS -->
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <!-- IRON ELEMENTS -->
 <link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
 <!-- CUSTOM ELEMENTS -->
@@ -12,6 +17,10 @@
 <dom-module id="ceg-chat">
   <template>
     <style include="shared-styles">
+      p {
+        margin: 0;
+      }
+
       #container {
         max-width: 750px;
         margin: 0 auto;
@@ -22,9 +31,14 @@
         min-height: 100vh;
       }
 
+      #title {
+        color: white;
+        margin-bottom: 15px;
+      }
+
       #chat-box {
         width: 100%;
-        height: 500px;
+        height: 600px;
         background-color: #ffffff;
       }
 
@@ -38,7 +52,7 @@
         #thread-options {
           border-right: 1px solid #2ECC71;
           padding-top: 15px;
-          padding-bottom: 118%;
+          padding-bottom: 163%;
         }
         .thread-option {
           margin-bottom: 15px;
@@ -54,23 +68,186 @@
 
       #messages {
         width: 70%;
+        height: 100%;
         float: right;
+        position: relative;
       }
+        #messages paper-icon-button {
+          visibility: hidden;
+        }
 
       #messages app-toolbar, #thread-list app-toolbar {
         background-color: #2ECC71;
         color: white;
       }
 
-      #sign-out {
-        font-size: 1.8em;
-        color: white;
-        cursor: pointer;
-        margin-top: 25px;
+      /* MESSAGE BOX */
+      #message-body {
+        width: 100%;
+      }
+        #message-body img {
+          width: 50px;
+          border-radius: 50%;
+        }
+        #message-body p {
+          font-size: 1.6em;
+        }
+      #left-message {
+        clear:both;
+        width: 100%;
+        overflow: hidden;
+        border-bottom: 1px solid #ccc;
+      }
+        #left-message img {
+          margin: 10px 25px 10px 15px;
+          max-width: 15%;
+          float: left;
+        }
+        .text-left {
+          max-width: 75%;
+          float: left;
+          position: relative;
+          background: #ccc;
+          padding: 10px;
+          color: #222;
+          border-radius: 3px;
+          margin-bottom: 15px;
+        }
+        .text-left::after {
+          content: "";
+          display: block;
+          position: absolute;
+          width: 0;
+          height: 0;
+          border-top: 8px solid transparent;
+          border-bottom: 8px solid transparent;
+          border-right: 15px solid #ccc;
+
+          left: -14px;
+          bottom: 25px;
+        }
+      #right-message {
+        clear: both;
+        width: 100%;
+        overflow: hidden;
+        text-align: right;
+        border-bottom: 1px solid #ccc;
+      }
+        #right-message img {
+          margin: 10px 10px 10px 25px;
+          max-width: 15%;
+          float: right;
+        }
+        .text-right {
+          max-width: 75%;
+          float: right;
+          position: relative;
+          background: #ccc;
+          padding: 10px;
+          color: #222;
+          border-radius: 3px;
+          margin-bottom: 15px;
+        }
+          .text-right::after {
+            content: "";
+            display: block;
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 15px solid #ccc;
+
+            right: -14px;
+            bottom: 25px;
+          }
+
+      #message-input{
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+      }
+        #message-input paper-textarea{
+          width: 75%;
+          float: left;
+          margin-left: 2px;
+        }
+        #message-input paper-button {
+          margin: 0;
+          width: 24%;
+          font-size: 1.6em;
+          color: white;
+          background-color: #2ECC71;
+          float: right;
+          padding-top: 16px;
+          padding-bottom: 16px;
+        }
+          #message-input paper-button iron-icon {
+            margin-left: 7px;
+          }
+
+        #drawer app-toolbar {
+          background-color: #3385ff;
+          color: white;
+          margin-bottom: 15px;
+        }
+
+        #sign-out {
+          font-size: 1.8em;
+          color: white;
+          cursor: pointer;
+          margin-top: 25px;
+        }
+
+      /* MEDIA QUERIES */
+      /* PHONE AND TABLET */
+      @media screen and (max-width: 760px) {
+        #thread-list, #sign-out, #title {
+          display: none;
+        }
+
+        #container {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+
+        #chat-box {
+          height: 100vh;
+        }
+
+        #messages{
+          width: 100%;
+          float: none;
+        }
+          #messages paper-icon-button {
+            visibility: visible;
+          }
+      }
+
+      /* MESSAGE BODY MEDIA QUERIES */
+      @media screen and (max-width: 475px) {
+        #right-message img {
+          margin: 0;
+        }
+        #left-message img {
+          margin: 0;
+        }
+      }
+
+      /* MESSAGE INPUT MEDIA QUERIES */
+      @media screen and (max-width: 350px) {
+        #message-input paper-textarea{
+          width: 70%;
+        }
+        #message-input paper-button {
+          width: 20%;
+        }
       }
     </style>
 
     <div id="container">
+      <h1 id="title">Welcome [[userName]]!</h1>
       <!-- CHAT-BOX -->
       <div id="chat-box">
         <!-- THREAD LIST CONTAINER -->
@@ -80,15 +257,18 @@
           <div id="thread-options">
 
             <iron-selector attr-for-selected="name" selected="[[selectedThread]]">
-              <div name="general" class="thread-option" on-tap="_onThreadChange">
+
+              <div name="General" class="thread-option" on-tap="threadChange">
                 <iron-icon icon="ceg-icons:people"></iron-icon>
                 General
               </div>
-              <div name="comments" class="thread-option" on-tap="_onThreadChange">
+
+              <div name="Comments" class="thread-option" on-tap="threadChange">
                 <iron-icon icon="ceg-icons:comment"></iron-icon>
                 Comments
               </div>
-              <div name="feedback" class="thread-option" on-tap="_onThreadChange">
+
+              <div name="Feedback" class="thread-option" on-tap="threadChange">
                 <iron-icon icon="ceg-icons:feedback"></iron-icon>
                 Feedback
               </div>
@@ -99,8 +279,48 @@
         </div>
         <!-- MESSAGES CONTAINER -->
         <div id="messages">
-          <app-toolbar>Chat-Box - Current Thread</app-toolbar>
-        </div>
+
+          <app-toolbar>
+            <div main-title>Chat-Box - [[selectedThread]]</div>
+            <paper-icon-button on-tap="_toggleDrawer" icon="ceg-icons:menu"></paper-icon-button>
+          </app-toolbar>
+
+            <!-- MESSAGE BODY (MESSAGES) -->
+            <div id="message-body">
+
+              <div id="left-message">
+                <img src="../../images/michael.jpg" alt="user image">
+                <p class="name-left">Michael Gee</p>
+                <p class="text-left">Hello this is a left message.Hello this is a left messageHello this is a left messageHello this is a left messageHello this is a left messageHello this is a left messageHello this is a left message</p>
+              </div>
+
+              <div id="right-message">
+                <img src="../../images/michael.jpg" alt="user image ">
+                <p class="name-right">Michael Gee</p>
+                <p class="text-right">Hello this is a right message</p>
+              </div>
+
+              <div id="left-message">
+                <img src="../../images/michael.jpg" alt="user image">
+                <p class="name-left">Michael Gee</p>
+                <p class="text-left">Hello this is a left message</p>
+              </div>
+
+              <div id="left-message">
+                <img src="../../images/michael.jpg" alt="user image">
+                <p class="name-left">Michael Gee</p>
+                <p class="text-left">Hello this is a left message</p>
+              </div>
+            </div>
+            <!-- MESSAGE INPUT(TEXT INPUT) -->
+            <div id="message-input">
+              <paper-textarea></paper-textarea>
+              <paper-button>
+                Send
+                <iron-icon icon="ceg-icons:send"></iron-icon>
+              </paper-button>
+            </div>
+        </div><!-- MESSAGES DIV END -->
 
       </div><!-- CHAT BOX DIV END -->
 
@@ -110,10 +330,43 @@
       </div>
     </div><!-- CONTAINER END -->
 
+    <!-- DRAWER -->
+    <app-drawer id="drawer" align="right" slot="drawer">
+      <app-toolbar>Welcome [[userName]]!</app-toolbar>
+      <iron-selector attr-for-selected="name" selected="[[selectedThread]]">
+
+        <div name="General" class="thread-option" on-tap="threadChange">
+          <iron-icon icon="ceg-icons:people"></iron-icon>
+          General
+        </div>
+
+        <div name="Comments" class="thread-option" on-tap="threadChange">
+          <iron-icon icon="ceg-icons:comment"></iron-icon>
+          Comments
+        </div>
+
+        <div name="Feedback" class="thread-option" on-tap="threadChange">
+          <iron-icon icon="ceg-icons:feedback"></iron-icon>
+          Feedback
+        </div>
+
+        <div class="thread-option" on-tap="signOut">
+          <iron-icon icon="ceg-icons:arrow-back"></iron-icon>
+          Sign Out
+        </div>
+      </iron-selector>
+    </app-drawer>
+
   </template>
 
   <script>
     class CegmagChat extends Polymer.LegacyElementMixin(Polymer.Element) {
+
+      constructor(){
+        super();
+
+        this.threadChange('default');
+      }
 
       static get is() { return 'ceg-chat'; }
 
@@ -121,18 +374,41 @@
 
         return {
           selectedThread: {
-            type: String
-          }
+            type: String,
+            value: "General",
+            observer: "_onThreadChange"
+          },
+          userName: String
         }
 
       }
 
-      _onThreadChange(e) {
-        console.log(this.$.name);
-        //this.selectedThread = e.target.name;
+      threadChange(e) {
+        if(e === "default"){
+          this.selectedThread = "General";
+          return false;
+        }
+
+        if(e.currentTarget.textContent.replace(/\s+/g, '') === this.selectedThread){
+          return false;
+        }
+        this.selectedThread = e.currentTarget.textContent.replace(/\s+/g, '');
+
+        if (!this.$.drawer.persistent) {
+          this.$.drawer.close();
+        }
+      }
+
+      _onThreadChange(){
+        console.log('hello');
+      }
+
+      _toggleDrawer(){
+        this.$.drawer.toggle();
       }
 
       signOut(){
+        this.$.drawer.close();
         window.dispatchEvent(new CustomEvent('sign-out'))
       }
     }

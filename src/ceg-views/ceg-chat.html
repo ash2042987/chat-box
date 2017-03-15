@@ -84,6 +84,9 @@
       /* MESSAGE BOX */
       #message-body {
         width: 100%;
+        height: 470px;
+        overflow-x: hidden;
+        overflow-y: scroll;
       }
         #message-body img {
           width: 50px;
@@ -123,7 +126,7 @@
           border-bottom: 8px solid transparent;
           border-right: 15px solid #ccc;
 
-          left: -14px;
+          left: -11px;
           bottom: 25px;
         }
       #right-message {
@@ -142,9 +145,9 @@
           max-width: 75%;
           float: right;
           position: relative;
-          background: #ccc;
+          background: #2ECC71;
           padding: 10px;
-          color: #222;
+          color: #ffffff;
           border-radius: 3px;
           margin-bottom: 15px;
         }
@@ -156,12 +159,12 @@
             height: 0;
             border-top: 8px solid transparent;
             border-bottom: 8px solid transparent;
-            border-left: 15px solid #ccc;
+            border-left: 15px solid  #2ECC71;
 
-            right: -14px;
+            right: -11px;
             bottom: 25px;
           }
-
+      /* MESSAGE TEXT AREA AND SEND BUTTON */
       #message-input{
         width: 100%;
         position: absolute;
@@ -174,9 +177,10 @@
         }
         #message-input paper-button {
           margin: 0;
-          width: 24%;
+          width: 23%;
           font-size: 1.6em;
           color: white;
+          margin-right: 3px;
           background-color: #2ECC71;
           float: right;
           padding-top: 16px;
@@ -206,23 +210,41 @@
           display: none;
         }
 
-        #container {
-          display: block;
-          width: 100%;
-          height: 100%;
-        }
-
-        #chat-box {
-          height: 100vh;
-        }
-
         #messages{
           width: 100%;
-          float: none;
+          display: flex;
+          flex-direction: column;
         }
           #messages paper-icon-button {
             visibility: visible;
           }
+
+        #messages app-toolbar {
+          min-height: 64px;
+        }
+        #messages-input {
+          min-height: 62px;
+        }
+
+        #message-body {
+          flex-grow: -1;
+          overflow-y: auto;
+          overflow-x: hidden;
+        }
+
+        .text-left, .text-right{
+          width: 60%;
+        }
+      }
+
+      @media screen and (min-width:320px) and (max-width:767px) and (orientation:landscape) {
+        #chat-box {
+          display: block;
+          height: 100vh;
+        }
+        #message-body {
+          height: 240px;
+        }
       }
 
       /* MESSAGE BODY MEDIA QUERIES */
@@ -233,6 +255,9 @@
         #left-message img {
           margin: 0;
         }
+        .text-right::after, .text-left::after {
+          display: none;
+        }
       }
 
       /* MESSAGE INPUT MEDIA QUERIES */
@@ -242,6 +267,7 @@
         }
         #message-input paper-button {
           width: 20%;
+          margin: 0;
         }
       }
     </style>
@@ -297,7 +323,7 @@
               <div id="right-message">
                 <img src="../../images/michael.jpg" alt="user image ">
                 <p class="name-right">Michael Gee</p>
-                <p class="text-right">Hello this is a right message</p>
+                <p class="text-right">Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. </p>
               </div>
 
               <div id="left-message">
@@ -368,6 +394,11 @@
         this.threadChange('default');
       }
 
+      connectedCallback(){
+        super.connectedCallback();
+        this._adjustScrollHeight();
+      }
+
       static get is() { return 'ceg-chat'; }
 
       static get properties() {
@@ -392,11 +423,18 @@
         if(e.currentTarget.textContent.replace(/\s+/g, '') === this.selectedThread){
           return false;
         }
+
+        this._adjustScrollHeight();
         this.selectedThread = e.currentTarget.textContent.replace(/\s+/g, '');
 
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
         }
+      }
+
+      _adjustScrollHeight(){
+        var messageBody = this.$['message-body'];
+        messageBody.scrollTop = messageBody.scrollHeight;
       }
 
       _onThreadChange(){

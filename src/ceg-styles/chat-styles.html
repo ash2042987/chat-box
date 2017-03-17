@@ -1,0 +1,185 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<!-- shared styles for all views -->
+<dom-module id="chat-styles">
+  <template>
+    <style>
+      #chat-box {
+        width: 100%;
+        background-color: #ffffff;
+        overflow: hidden;
+        height: 100vh;
+      }
+      #thread-list {
+        width: 29.85%;
+        float: left;
+        height: 100%;
+        background-color: white;
+        border-right: 1px solid #ccc;
+      }
+        #thread-userbox {
+          background-color: #2ECC71;
+          color: white;
+          display: flex;
+          flex-direction: column;
+        }
+          #thread-userbox h2 {
+            margin: 0;
+            padding: 10px 0;
+            font-size: 2.2em;
+            text-align: center;
+          }
+          #thread-userbox img {
+            width: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-self: center;
+            padding-bottom: 10px;
+          }
+        #thread-bar {
+          background-color: #ffffff;
+          color: black;
+          border-top: 1px solid #ccc;
+          border-bottom: 1px solid #ccc;
+          padding: 15px;
+          text-align: center;
+        }
+        .thread-option {
+          margin-bottom: 15px;
+          font-size: 1.8em;
+          padding: 5px;
+          text-align: center;
+          cursor: pointer;
+        }
+          .iron-selected {
+            background-color: #2ECC71;
+            color: white;
+          }
+
+      #messages {
+        width: 70%;
+        float: right;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background-color: #eee;
+      }
+        #messages app-toolbar {
+          background-color: #2ECC71;
+          color: white;
+        }
+        #drawer-button {
+          visibility: hidden;
+        }
+      #message-body{
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: calc(100vh - 100px);
+        overflow: auto;
+      }
+        #message-body img {
+          width: 50px;
+          border-radius: 50%;
+        }
+        #message-body p {
+          font-size: 1.6em;
+          margin: 0;
+        }
+      .message {
+        width: 100%;
+        padding: 5px 0 10px 0;
+        border-bottom: 1px solid #ccc;
+      }
+        .message img {
+          margin: 10px 25px 10px 15px;
+          max-width: 15%;
+          float: left;
+        }
+        .message-text {
+          max-width: 75%;
+          float: left;
+          position: relative;
+          background: #ccc;
+          padding: 10px;
+          color: #222;
+          border-radius: 3px;
+          margin-bottom: 15px;
+        }
+        .message-text::after {
+          content: "";
+          display: block;
+          position: absolute;
+          width: 0;
+          height: 0;
+          border-top: 8px solid transparent;
+          border-bottom: 8px solid transparent;
+          border-right: 15px solid #ccc;
+          left: -11px;
+          bottom: 25px;
+        }
+
+      #message-input {
+        height: 100px;
+        display: flex;
+        border-top: 1px solid #ccc;
+      }
+      #message-input paper-textarea{
+        width: 90%;
+        float: left;
+        overflow-x: hidden;
+        overflow-y: auto;
+        margin-left: 2px;
+        margin-top: 15px;
+      }
+      #message-input paper-button {
+        border-radius: 50%;
+        height: 70px;
+        padding: 25px;
+        margin-top: 20px;
+        margin-left: 5px;
+        color: white;
+        background-color: #2ECC71;
+      }
+
+      @media screen and (max-width: 760px) {
+        #thread-list {
+          display: none;
+        }
+        #messages{
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+          #drawer-button {
+            visibility: visible;
+          }
+          #signout-button {
+            display: none;
+          }
+      }
+
+      /* MESSAGE BODY MEDIA QUERIES */
+      @media screen and (max-width: 475px) {
+        .message-text {
+          padding: 5px 5px 10px 5px;
+        }
+        .message img {
+          margin: 0;
+        }
+          .message img {
+            margin-right: 15px;
+          }
+        .message-text::after {
+          display: none;
+        }
+
+        #message-input paper-button {
+          height: 25px;
+          margin-top: 25px;
+        }
+      }
+
+    </style>
+  </template>
+</dom-module>

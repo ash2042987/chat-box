@@ -4,73 +4,14 @@
 <!-- PAPER ELEMENTS -->
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <!-- CUSTOM ELEMENTS -->
-<link rel="import" href="../shared-styles.html">
+<!-- STYLES -->
+<link rel="import" href="../ceg-styles/shared-styles.html">
+<link rel="import" href="../ceg-styles/login-styles.html">
 
 <dom-module id="ceg-login">
   <template>
-    <style include="shared-styles">
-      :host {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        min-height: 100vh;
-        color: white;
-      }
-
-      h1 {
-        margin-bottom: 10px;
-      }
-
-      a {
-        color: black;
-      }
-        a:hover {
-          color: red;
-        }
-
-      #profile-img {
-        width: 150px;
-        border-radius: 50%;
-        margin-bottom: 10px;
-      }
-      #github-img {
-        width: 75px;
-        float: right;
-      }
-
-      paper-button {
-        font-size: 2em;
-        background-color: #eee;
-        color: black;
-        margin-top: 10px;
-        padding: 15px 50px 15px 50px;
-      }
-        paper-button img {
-          width: 25px;
-          padding-right: 5px;
-        }
-
-      #github p {
-        display: inline;
-        padding-top: 25px;
-        float:left;
-      }
-
-      /* MEDIA QUERIES */
-      @media screen and (max-width: 450px){
-        #github p {
-          display: block;
-          float: none;
-          text-align: center;
-        }
-        #github-img {
-          float: none;
-        }
-      }
-
-    </style>
+    <style include="shared-styles"></style>
+    <style include="login-styles"></style>
 
     <h1>Michael's Chat-Box</h1>
     <img id="profile-img" src="../../images/michael.jpg" alt="Michael Gee's Profile Picture">

@@ -15,225 +15,15 @@
 <link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
 <!-- CUSTOM ELEMENTS -->
 <link rel="import" href="../ceg-icons/ceg-icons.html">
-<link rel="import" href="../shared-styles.html">
+<!-- STYLES -->
+<link rel="import" href="../ceg-styles/shared-styles.html">
+<link rel="import" href="../ceg-styles/chat-styles.html">
+
 
 <dom-module id="ceg-chat">
   <template>
-    <style include="shared-styles">
-      #chat-box {
-        width: 100%;
-        background-color: #ffffff;
-        overflow: hidden;
-        height: 100vh;
-      }
-      #thread-list {
-        width: 29.85%;
-        float: left;
-        height: 100%;
-        background-color: white;
-        border-right: 1px solid #2ECC71;
-      }
-        #thread-userbox {
-          background-color: #2ECC71;
-          color: white;
-          display: flex;
-          flex-direction: column;
-        }
-          #thread-userbox h2 {
-            margin: 0;
-            padding: 10px 0;
-            font-size: 2.2em;
-            text-align: center;
-          }
-          #thread-userbox img {
-            width: 100px;
-            border-radius: 50%;
-            display: flex;
-            align-self: center;
-            padding-bottom: 10px;
-          }
-        #thread-bar {
-          background-color: #ffffff;
-          color: black;
-          border-top: 1px solid #ccc;
-          border-bottom: 1px solid #ccc;
-          padding: 15px;
-          text-align: center;
-        }
-        .thread-option {
-          margin-bottom: 15px;
-          font-size: 1.8em;
-          padding: 5px;
-          text-align: center;
-          cursor: pointer;
-        }
-          .iron-selected {
-            background-color: #2ECC71;
-            color: white;
-          }
-
-      #messages {
-        width: 70%;
-        float: right;
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        background-color: #eee;
-      }
-        #messages app-toolbar {
-          background-color: #2ECC71;
-          color: white;
-        }
-        #drawer-button {
-          visibility: hidden;
-        }
-      #message-body{
-        display: flex;
-        flex-direction: column;
-        overflow-x: hidden;
-        overflow-y: auto;
-        height: calc(100vh - 100px);
-      }
-        #message-body img {
-          width: 50px;
-          border-radius: 50%;
-        }
-        #message-body p {
-          font-size: 1.6em;
-          margin: 0;
-        }
-      .left-message {
-        clear:both;
-        width: 100%;
-        padding: 5px 0 10px 0;
-        border-bottom: 1px solid #ccc;
-      }
-        .left-message img {
-          margin: 10px 25px 10px 15px;
-          max-width: 15%;
-          float: left;
-        }
-        .text-left {
-          max-width: 75%;
-          float: left;
-          position: relative;
-          background: #ccc;
-          padding: 10px;
-          color: #222;
-          border-radius: 3px;
-          margin-bottom: 15px;
-        }
-        .text-left::after {
-          content: "";
-          display: block;
-          position: absolute;
-          width: 0;
-          height: 0;
-          border-top: 8px solid transparent;
-          border-bottom: 8px solid transparent;
-          border-right: 15px solid #ccc;
-          left: -11px;
-          bottom: 25px;
-        }
-      .right-message {
-        clear: both;
-        width: 100%;
-        padding: 5px 0 10px 0;
-        text-align: right;
-        border-bottom: 1px solid #ccc;
-      }
-        .right-message img {
-          margin: 10px 10px 10px 25px;
-          max-width: 15%;
-          float: right;
-        }
-        .text-right {
-          max-width: 75%;
-          float: right;
-          position: relative;
-          background: #2ECC71;
-          padding: 10px;
-          color: #ffffff;
-          border-radius: 3px;
-          margin-bottom: 15px;
-        }
-          .text-right::after {
-            content: "";
-            display: block;
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-top: 8px solid transparent;
-            border-bottom: 8px solid transparent;
-            border-left: 15px solid  #2ECC71;
-            right: -11px;
-            bottom: 25px;
-          }
-
-      #message-input {
-        height: 100px;
-        display: flex;
-        border-top: 1px solid #ccc;
-      }
-      #message-input paper-textarea{
-        width: 90%;
-        overflow: auto;
-        float: left;
-        margin-left: 2px;
-        margin-top: 15px;
-      }
-      #message-input paper-button {
-        border-radius: 50%;
-        height: 70px;
-        padding: 25px;
-        margin-top: 20px;
-        margin-left: 5px;
-        color: white;
-        background-color: #2ECC71;
-      }
-
-      @media screen and (max-width: 760px) {
-        #thread-list {
-          display: none;
-        }
-        #messages{
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-        }
-          #drawer-button {
-            visibility: visible;
-          }
-          #signout-button {
-            display: none;
-          }
-      }
-
-    /* MESSAGE BODY MEDIA QUERIES */
-    @media screen and (max-width: 475px) {
-      .right-message, .left-message {
-        padding: 5px 0 10px 0;
-      }
-      .right-message img, .left-message img {
-        margin: 0;
-      }
-        .left-message img {
-          margin-right: 15px;
-        }
-        .right-message img {
-          margin-left: 15px;
-        }
-      .text-right::after, .text-left::after {
-        display: none;
-      }
-
-      #message-input paper-button {
-        height: 25px;
-        margin-top: 25px;
-      }
-    }
-
-    </style>
+    <style include="shared-styles"></style>
+    <style include="chat-styles"></style>
 
     <!-- FIREBASE QUERY -->
     <firebase-query
@@ -294,27 +84,17 @@
           <div id="message-body">
             <template is="dom-repeat" items="{{messages}}" as="message">
 
-                <template is="dom-if" if="[[isOnlineUser([[userName]], message.user)]]">
-                  <div class="right-message">
-                    <img src="[[message.image]]" "[[message.user]]'s' Profile Image">
-                    <p class="name-right">[[message.user]]</p>
-                    <p class="text-right">[[message.content]]</p>
-                  </div>
-                </template>
+              <div class="message">
+                <img src="[[message.image]]" alt="[[message.user]]'s' Profile Image">
+                <p style="font-size: 1.3em">[[message.user]]</p>
+                <p class="message-text">[[message.content]]</p>
+              </div>
 
-                <template is="dom-if" if="[[isOtherUser([[userName]], message.user)]]">
-                  <div class="left-message">
-                    <img src="[[message.image]]" alt="[[message.user]]'s' Profile Image">
-                    <p class="name-left">[[message.user]]</p>
-                    <p class="text-left">[[message.content]]</p>
-                  </div>
-                </template>
-
-              </template>
+            </template>
           </div>
 
           <div id="message-input">
-            <paper-textarea id="user-message"></paper-textarea>
+            <paper-textarea id="user-message" on-keyup="checkKey"></paper-textarea>
               <paper-button on-tap="addMessage">
                 <iron-icon icon="ceg-icons:send"></iron-icon>
               </paper-button>
@@ -367,11 +147,11 @@
       constructor(){
         super();
       }
+
       connectedCallback(){
         super.connectedCallback();
         this._adjustScrollHeight();
       }
-
 
       static get is() { return 'ceg-chat'; }
 
@@ -380,7 +160,6 @@
         return {
           selectedThread: {
             type: String,
-            value: "General",
             observer: "_onThreadChange"
           },
           messages: {
@@ -420,15 +199,14 @@
         this.$["user-message"].value = null;
       }
 
-      isOnlineUser(activeUser, postUser){
-        return activeUser === postUser;
-      }
-
-      isOtherUser(activeUser, postUser){
-        return activeUser !== postUser;
+      checkKey(e) {
+        if(e.keyCode === 13 || e.charCode === 13) {
+          this.addMessage();
+        }
       }
 
       _adjustScrollHeight(){
+        console.log("adjusted");
         var messageBody = this.$['message-body'];
         messageBody.scrollTop = messageBody.scrollHeight;
       }

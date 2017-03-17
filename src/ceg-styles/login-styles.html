@@ -1,0 +1,70 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<!-- shared styles for all views -->
+<dom-module id="login-styles">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        min-height: 100vh;
+        color: white;
+      }
+
+      h1 {
+        margin-bottom: 10px;
+      }
+
+      a {
+        color: black;
+      }
+        a:hover {
+          color: red;
+        }
+
+      #profile-img {
+        width: 150px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+      }
+      #github-img {
+        width: 75px;
+        float: right;
+      }
+
+      paper-button {
+        font-size: 2em;
+        background-color: #eee;
+        color: black;
+        margin-top: 10px;
+        padding: 15px 50px 15px 50px;
+      }
+        paper-button img {
+          width: 25px;
+          padding-right: 5px;
+        }
+
+      #github p {
+        display: inline;
+        padding-top: 25px;
+        float:left;
+      }
+
+      /* MEDIA QUERIES */
+      @media screen and (max-width: 450px){
+        #github p {
+          display: block;
+          float: none;
+          text-align: center;
+        }
+        #github-img {
+          float: none;
+        }
+      }
+
+    </style>
+  </template>
+</dom-module>

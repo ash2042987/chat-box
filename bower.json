@@ -16,7 +16,8 @@
     "polymerfire": "firebase/polymerfire#2.0-preview",
     "app-layout": "PolymerElements/app-layout#2.0-preview",
     "paper-spinner": "PolymerElements/paper-spinner#2.0-preview",
-    "paper-input": "PolymerElements/paper-input#2.0-preview"
+    "paper-input": "PolymerElements/paper-input#2.0-preview",
+    "paper-tooltip": "PolymerElements/paper-tooltip#2.0-preview"
   },
   "devDependencies": {
     "web-component-tester": "6.0.0-prerelease.5"

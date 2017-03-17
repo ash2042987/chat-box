@@ -17,10 +17,6 @@
 <dom-module id="ceg-app">
   <template>
     <style>
-      :host {
-        display: block;
-      }
-
       .overlay {
         position: absolute;
         top: 0;
@@ -57,6 +53,7 @@
     <template is="dom-if" if="{{user}}">
       <ceg-chat
         user-name="[[user.displayName]]"
+        user-image="[[user.photoURL]]"
       ></ceg-chat>
     </template>
 

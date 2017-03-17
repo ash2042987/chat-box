@@ -8,8 +8,11 @@
 <link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
 <!-- IRON ELEMENTS -->
 <link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<!-- POLYMERFIRE ELEMENTS -->
+<link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
 <!-- CUSTOM ELEMENTS -->
 <link rel="import" href="../ceg-icons/ceg-icons.html">
 <link rel="import" href="../shared-styles.html">
@@ -17,42 +20,45 @@
 <dom-module id="ceg-chat">
   <template>
     <style include="shared-styles">
-      p {
-        margin: 0;
-      }
-
-      #container {
-        max-width: 750px;
-        margin: 0 auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-      }
-
-      #title {
-        color: white;
-        margin-bottom: 15px;
-      }
-
       #chat-box {
         width: 100%;
-        height: 600px;
         background-color: #ffffff;
+        overflow: hidden;
+        height: 100vh;
       }
-
       #thread-list {
-        width: 30%;
+        width: 29.85%;
         float: left;
+        height: 100%;
+        background-color: white;
+        border-right: 1px solid #2ECC71;
       }
-        #thread-list app-toolbar {
-          border-right: 1px solid white;
+        #thread-userbox {
+          background-color: #2ECC71;
+          color: white;
+          display: flex;
+          flex-direction: column;
         }
-        #thread-options {
-          border-right: 1px solid #2ECC71;
-          padding-top: 15px;
-          padding-bottom: 163%;
+          #thread-userbox h2 {
+            margin: 0;
+            padding: 10px 0;
+            font-size: 2.2em;
+            text-align: center;
+          }
+          #thread-userbox img {
+            width: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-self: center;
+            padding-bottom: 10px;
+          }
+        #thread-bar {
+          background-color: #ffffff;
+          color: black;
+          border-top: 1px solid #ccc;
+          border-bottom: 1px solid #ccc;
+          padding: 15px;
+          text-align: center;
         }
         .thread-option {
           margin-bottom: 15px;
@@ -68,25 +74,25 @@
 
       #messages {
         width: 70%;
-        height: 100%;
         float: right;
-        position: relative;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        background-color: #eee;
       }
-        #messages paper-icon-button {
+        #messages app-toolbar {
+          background-color: #2ECC71;
+          color: white;
+        }
+        #drawer-button {
           visibility: hidden;
         }
-
-      #messages app-toolbar, #thread-list app-toolbar {
-        background-color: #2ECC71;
-        color: white;
-      }
-
-      /* MESSAGE BOX */
-      #message-body {
-        width: 100%;
-        height: 470px;
+      #message-body{
+        display: flex;
+        flex-direction: column;
         overflow-x: hidden;
-        overflow-y: scroll;
+        overflow-y: auto;
+        height: calc(100vh - 100px);
       }
         #message-body img {
           width: 50px;
@@ -94,14 +100,15 @@
         }
         #message-body p {
           font-size: 1.6em;
+          margin: 0;
         }
-      #left-message {
+      .left-message {
         clear:both;
         width: 100%;
-        overflow: hidden;
+        padding: 5px 0 10px 0;
         border-bottom: 1px solid #ccc;
       }
-        #left-message img {
+        .left-message img {
           margin: 10px 25px 10px 15px;
           max-width: 15%;
           float: left;
@@ -125,18 +132,17 @@
           border-top: 8px solid transparent;
           border-bottom: 8px solid transparent;
           border-right: 15px solid #ccc;
-
           left: -11px;
           bottom: 25px;
         }
-      #right-message {
+      .right-message {
         clear: both;
         width: 100%;
-        overflow: hidden;
+        padding: 5px 0 10px 0;
         text-align: right;
         border-bottom: 1px solid #ccc;
       }
-        #right-message img {
+        .right-message img {
           margin: 10px 10px 10px 25px;
           max-width: 15%;
           float: right;
@@ -160,125 +166,95 @@
             border-top: 8px solid transparent;
             border-bottom: 8px solid transparent;
             border-left: 15px solid  #2ECC71;
-
             right: -11px;
             bottom: 25px;
           }
-      /* MESSAGE TEXT AREA AND SEND BUTTON */
-      #message-input{
-        width: 100%;
-        position: absolute;
-        bottom: 0;
+
+      #message-input {
+        height: 100px;
+        display: flex;
+        border-top: 1px solid #ccc;
       }
-        #message-input paper-textarea{
-          width: 75%;
-          float: left;
-          margin-left: 2px;
-        }
-        #message-input paper-button {
-          margin: 0;
-          width: 23%;
-          font-size: 1.6em;
-          color: white;
-          margin-right: 3px;
-          background-color: #2ECC71;
-          float: right;
-          padding-top: 16px;
-          padding-bottom: 16px;
-        }
-          #message-input paper-button iron-icon {
-            margin-left: 7px;
-          }
+      #message-input paper-textarea{
+        width: 90%;
+        overflow: auto;
+        float: left;
+        margin-left: 2px;
+        margin-top: 15px;
+      }
+      #message-input paper-button {
+        border-radius: 50%;
+        height: 70px;
+        padding: 25px;
+        margin-top: 20px;
+        margin-left: 5px;
+        color: white;
+        background-color: #2ECC71;
+      }
 
-        #drawer app-toolbar {
-          background-color: #3385ff;
-          color: white;
-          margin-bottom: 15px;
-        }
-
-        #sign-out {
-          font-size: 1.8em;
-          color: white;
-          cursor: pointer;
-          margin-top: 25px;
-        }
-
-      /* MEDIA QUERIES */
-      /* PHONE AND TABLET */
       @media screen and (max-width: 760px) {
-        #thread-list, #sign-out, #title {
+        #thread-list {
           display: none;
         }
-
         #messages{
           width: 100%;
           display: flex;
           flex-direction: column;
         }
-          #messages paper-icon-button {
+          #drawer-button {
             visibility: visible;
           }
-
-        #messages app-toolbar {
-          min-height: 64px;
-        }
-        #messages-input {
-          min-height: 62px;
-        }
-
-        #message-body {
-          flex-grow: -1;
-          overflow-y: auto;
-          overflow-x: hidden;
-        }
-
-        .text-left, .text-right{
-          width: 60%;
-        }
+          #signout-button {
+            display: none;
+          }
       }
 
-      @media screen and (min-width:320px) and (max-width:767px) and (orientation:landscape) {
-        #chat-box {
-          display: block;
-          height: 100vh;
+    /* MESSAGE BODY MEDIA QUERIES */
+    @media screen and (max-width: 475px) {
+      .right-message, .left-message {
+        padding: 5px 0 10px 0;
+      }
+      .right-message img, .left-message img {
+        margin: 0;
+      }
+        .left-message img {
+          margin-right: 15px;
         }
-        #message-body {
-          height: 240px;
+        .right-message img {
+          margin-left: 15px;
         }
+      .text-right::after, .text-left::after {
+        display: none;
       }
 
-      /* MESSAGE BODY MEDIA QUERIES */
-      @media screen and (max-width: 475px) {
-        #right-message img {
-          margin: 0;
-        }
-        #left-message img {
-          margin: 0;
-        }
-        .text-right::after, .text-left::after {
-          display: none;
-        }
+      #message-input paper-button {
+        height: 25px;
+        margin-top: 25px;
       }
+    }
 
-      /* MESSAGE INPUT MEDIA QUERIES */
-      @media screen and (max-width: 350px) {
-        #message-input paper-textarea{
-          width: 70%;
-        }
-        #message-input paper-button {
-          width: 20%;
-          margin: 0;
-        }
-      }
     </style>
 
-    <div id="container">
-      <h1 id="title">Welcome [[userName]]!</h1>
-      <!-- CHAT-BOX -->
+    <!-- FIREBASE QUERY -->
+    <firebase-query
+      id="query"
+      path="/[[selectedThread]]/messages"
+      data="{{messages}}"
+    ></firebase-query>
+
+    <!-- CHAT-BOX -->
       <div id="chat-box">
         <!-- THREAD LIST CONTAINER -->
         <div id="thread-list">
-          <app-toolbar>Threads</app-toolbar>
+
+          <div id="thread-userbox">
+            <h2>Welcome [[userName]]!</h2>
+            <img src="[[userImage]]" alt="[[userName]]'s Profile Image'">
+          </div>
+
+          <div id="thread-bar">
+            <h3>Threads</h3>
+          </div>
 
           <div id="thread-options">
 
@@ -303,85 +279,85 @@
           </div>
 
         </div>
-        <!-- MESSAGES CONTAINER -->
+
         <div id="messages">
 
           <app-toolbar>
             <div main-title>Chat-Box - [[selectedThread]]</div>
-            <paper-icon-button on-tap="_toggleDrawer" icon="ceg-icons:menu"></paper-icon-button>
+            <!-- DRAWER ICON -->
+            <paper-icon-button id="drawer-button" on-tap="_toggleDrawer" icon="ceg-icons:menu"></paper-icon-button>
+            <!-- SIGN OUT ICON -->
+            <paper-icon-button id="signout-button" on-tap="_signOut" icon="ceg-icons:backspace"></paper-icon-button>
+            <paper-tooltip for="signout-button" offset="0">Sign Out</paper-tooltip>
           </app-toolbar>
 
-            <!-- MESSAGE BODY (MESSAGES) -->
-            <div id="message-body">
+          <div id="message-body">
+            <template is="dom-repeat" items="{{messages}}" as="message">
 
-              <div id="left-message">
-                <img src="../../images/michael.jpg" alt="user image">
-                <p class="name-left">Michael Gee</p>
-                <p class="text-left">Hello this is a left message.Hello this is a left messageHello this is a left messageHello this is a left messageHello this is a left messageHello this is a left messageHello this is a left message</p>
-              </div>
+                <template is="dom-if" if="[[isOnlineUser([[userName]], message.user)]]">
+                  <div class="right-message">
+                    <img src="[[message.image]]" "[[message.user]]'s' Profile Image">
+                    <p class="name-right">[[message.user]]</p>
+                    <p class="text-right">[[message.content]]</p>
+                  </div>
+                </template>
 
-              <div id="right-message">
-                <img src="../../images/michael.jpg" alt="user image ">
-                <p class="name-right">Michael Gee</p>
-                <p class="text-right">Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. Hello this is a right message. </p>
-              </div>
+                <template is="dom-if" if="[[isOtherUser([[userName]], message.user)]]">
+                  <div class="left-message">
+                    <img src="[[message.image]]" alt="[[message.user]]'s' Profile Image">
+                    <p class="name-left">[[message.user]]</p>
+                    <p class="text-left">[[message.content]]</p>
+                  </div>
+                </template>
 
-              <div id="left-message">
-                <img src="../../images/michael.jpg" alt="user image">
-                <p class="name-left">Michael Gee</p>
-                <p class="text-left">Hello this is a left message</p>
-              </div>
+              </template>
+          </div>
 
-              <div id="left-message">
-                <img src="../../images/michael.jpg" alt="user image">
-                <p class="name-left">Michael Gee</p>
-                <p class="text-left">Hello this is a left message</p>
-              </div>
-            </div>
-            <!-- MESSAGE INPUT(TEXT INPUT) -->
-            <div id="message-input">
-              <paper-textarea></paper-textarea>
-              <paper-button>
-                Send
+          <div id="message-input">
+            <paper-textarea id="user-message"></paper-textarea>
+              <paper-button on-tap="addMessage">
                 <iron-icon icon="ceg-icons:send"></iron-icon>
               </paper-button>
-            </div>
-        </div><!-- MESSAGES DIV END -->
+          </div>
+
+        </div>
 
       </div><!-- CHAT BOX DIV END -->
 
-      <div id="sign-out" on-tap="signOut">
-        <iron-icon icon="ceg-icons:arrow-back"></iron-icon>
-        Sign Out
-      </div>
-    </div><!-- CONTAINER END -->
-
-    <!-- DRAWER -->
-    <app-drawer id="drawer" align="right" slot="drawer">
-      <app-toolbar>Welcome [[userName]]!</app-toolbar>
-      <iron-selector attr-for-selected="name" selected="[[selectedThread]]">
-
-        <div name="General" class="thread-option" on-tap="threadChange">
-          <iron-icon icon="ceg-icons:people"></iron-icon>
-          General
+      <!-- DRAWER -->
+      <app-drawer id="drawer" align="right" slot="drawer">
+        <div id="thread-userbox">
+          <h2>Welcome [[userName]]!</h2>
+          <img src="[[userImage]]" alt="[[userName]]'s Profile Image'">
         </div>
 
-        <div name="Comments" class="thread-option" on-tap="threadChange">
-          <iron-icon icon="ceg-icons:comment"></iron-icon>
-          Comments
+        <div id="thread-bar">
+          <h3>Threads</h3>
         </div>
 
-        <div name="Feedback" class="thread-option" on-tap="threadChange">
-          <iron-icon icon="ceg-icons:feedback"></iron-icon>
-          Feedback
-        </div>
+        <iron-selector attr-for-selected="name" selected="[[selectedThread]]">
 
-        <div class="thread-option" on-tap="signOut">
-          <iron-icon icon="ceg-icons:arrow-back"></iron-icon>
-          Sign Out
-        </div>
-      </iron-selector>
-    </app-drawer>
+          <div name="General" class="thread-option" on-tap="threadChange">
+            <iron-icon icon="ceg-icons:people"></iron-icon>
+            General
+          </div>
+
+          <div name="Comments" class="thread-option" on-tap="threadChange">
+            <iron-icon icon="ceg-icons:comment"></iron-icon>
+            Comments
+          </div>
+
+          <div name="Feedback" class="thread-option" on-tap="threadChange">
+            <iron-icon icon="ceg-icons:feedback"></iron-icon>
+            Feedback
+          </div>
+
+          <div class="thread-option" on-tap="_signOut">
+            <iron-icon icon="ceg-icons:arrow-back"></iron-icon>
+            Sign Out
+          </div>
+        </iron-selector>
+      </app-drawer>
 
   </template>
 
@@ -390,14 +366,12 @@
 
       constructor(){
         super();
-
-        this.threadChange('default');
       }
-
       connectedCallback(){
         super.connectedCallback();
         this._adjustScrollHeight();
       }
+
 
       static get is() { return 'ceg-chat'; }
 
@@ -409,17 +383,17 @@
             value: "General",
             observer: "_onThreadChange"
           },
-          userName: String
+          messages: {
+            type: Object
+            //observer: "_dataChanged"
+          },
+          userName: String,
+          userImage: String
         }
 
       }
 
       threadChange(e) {
-        if(e === "default"){
-          this.selectedThread = "General";
-          return false;
-        }
-
         if(e.currentTarget.textContent.replace(/\s+/g, '') === this.selectedThread){
           return false;
         }
@@ -432,24 +406,42 @@
         }
       }
 
+      _onThreadChange(){
+        console.log('hello');
+      }
+
+      addMessage() {
+        this.$.query.ref.push({
+          image: this.userImage,
+          content: this.$["user-message"].value,
+          user: this.userName
+        });
+
+        this.$["user-message"].value = null;
+      }
+
+      isOnlineUser(activeUser, postUser){
+        return activeUser === postUser;
+      }
+
+      isOtherUser(activeUser, postUser){
+        return activeUser !== postUser;
+      }
+
       _adjustScrollHeight(){
         var messageBody = this.$['message-body'];
         messageBody.scrollTop = messageBody.scrollHeight;
-      }
-
-      _onThreadChange(){
-        console.log('hello');
       }
 
       _toggleDrawer(){
         this.$.drawer.toggle();
       }
 
-      signOut(){
-        this.$.drawer.close();
+      _signOut(){
         window.dispatchEvent(new CustomEvent('sign-out'))
       }
     }
+
 
     window.customElements.define(CegmagChat.is, CegmagChat);
   </script>

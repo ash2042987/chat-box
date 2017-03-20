@@ -30,6 +30,7 @@
       id="query"
       path="/[[selectedThread]]/messages"
       data="{{messages}}"
+      order-by-child="timestamp"
     ></firebase-query>
 
     <!-- CHAT-BOX -->
@@ -40,6 +41,13 @@
           <div id="thread-userbox">
             <h2>Welcome [[userName]]!</h2>
             <img src="[[userImage]]" alt="[[userName]]'s Profile Image'">
+          </div>
+
+          <div id="home-bar">
+            <div id="home-button" on-tap="triggerWelcomePage">
+              <iron-icon icon="ceg-icons:home"></iron-icon>
+              Home
+            </div>
           </div>
 
           <div id="thread-bar">
@@ -81,7 +89,48 @@
             <paper-tooltip for="signout-button" offset="0">Sign Out</paper-tooltip>
           </app-toolbar>
 
-          <div id="message-body">
+          <div id="welcome">
+
+            <h2>Welcome to Chat-Box</h2>
+            <p>Built with Polymer 2 and Firebase.</p>
+            <img id="profile-img" src="../../images/michael.jpg" alt="Michael Gee's Profile Picture">
+            <p>Coded by Michael Gee</p>
+            <p>View source code <a href="https://github.com/michaelgee22/chat-box">here</a></p>
+            <p>Social Media:</p>
+
+            <div id="social-media">
+              <div id="section1">
+
+                <img src="../../images/social-media/email.png" alt="Email Icon">
+
+                <a href="https://www.linkedin.com/in/michael-gee/" target="_blank">
+                  <img src="../../images/social-media/linkedin.png" alt="Linked In Icon">
+                </a>
+
+                <a href="https://www.facebook.com/michael.gee.167" target="_blank">
+                  <img src="../../images/social-media/facebook.png" alt="Facebook Icon">
+                </a>
+              </div>
+
+              <div id="section2">
+                <a href="https://twitter.com/michaelgee7" target="_blank">
+                  <img src="../../images/social-media/twitter.png" alt="Twitter Icon">
+                </a>
+
+                <img src="../../images/social-media/skype.png" alt="Skype Icon">
+
+                <a href="https://github.com/michaelgee22" target="_blank">
+                  <img id="github-img" src="../../images/social-media/github.svg" alt="Github Logo">
+                </a>
+              </div>
+            </div><!-- SOCIAL MEDIA DIV END -->
+
+            <p>Website: <a href="https://www.michaelgee.me/" target="_blank">https://www.michaelgee.me/</a></p>
+
+          </div><!-- WELCOME DIV END -->
+
+          <div id="message-body" class="none">
+
             <template is="dom-repeat" items="{{messages}}" as="message">
 
               <div class="message">
@@ -109,6 +158,13 @@
         <div id="thread-userbox">
           <h2>Welcome [[userName]]!</h2>
           <img src="[[userImage]]" alt="[[userName]]'s Profile Image'">
+        </div>
+
+        <div id="home-bar">
+          <div id="home-button" on-tap="triggerWelcomePage">
+            <iron-icon icon="ceg-icons:home"></iron-icon>
+            Home
+          </div>
         </div>
 
         <div id="thread-bar">
@@ -160,19 +216,30 @@
         return {
           selectedThread: {
             type: String,
-            observer: "_onThreadChange"
+            value: "Welcome!"
           },
           messages: {
             type: Object
             //observer: "_dataChanged"
           },
           userName: String,
-          userImage: String
+          userImage: String,
+          welcomeHidden: {
+            type: Boolean,
+            value: false
+          }
         }
 
       }
 
       threadChange(e) {
+        if(this.welcomeHidden === false){
+          this.welcomeHidden = true;
+
+          this.$["welcome"].style.display = "none";
+          this.$["message-body"].style.display = "flex";
+        }
+
         if(e.currentTarget.textContent.replace(/\s+/g, '') === this.selectedThread){
           return false;
         }
@@ -185,15 +252,20 @@
         }
       }
 
-      _onThreadChange(){
-        console.log('hello');
-      }
-
       addMessage() {
+        var userInput = this.$["user-message"].value.replace(/\s+/g, '')
+
+        if( userInput === "" || userInput === null ){
+          return false;
+        }
+
+        var currentTime = -1 * new Date().getTime();
+
         this.$.query.ref.push({
           image: this.userImage,
           content: this.$["user-message"].value,
-          user: this.userName
+          user: this.userName,
+          timestamp: currentTime
         });
 
         this.$["user-message"].value = null;
@@ -201,7 +273,21 @@
 
       checkKey(e) {
         if(e.keyCode === 13 || e.charCode === 13) {
-          this.addMessage();
+          this.addMessage(e);
+        }
+      }
+
+      triggerWelcomePage(){
+        if(this.welcomeHidden === true){
+          this.welcomeHidden = false;
+          this.selectedThread = "Welcome!";
+
+          this.$["welcome"].style.display = "flex";
+          this.$["message-body"].style.display = "none";
+        }
+
+        if (!this.$.drawer.persistent) {
+          this.$.drawer.close();
         }
       }
 

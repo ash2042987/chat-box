@@ -91,9 +91,9 @@
 
           <div id="welcome">
 
-            <h2>Welcome to Chat-Box</h2>
+            <h1>Welcome to Chat-Box</h1>
+            <img id="profile-img" src="../../images/chat-box.jpg" alt="Michael Gee's Profile Picture">
             <p>Built with Polymer 2 and Firebase.</p>
-            <img id="profile-img" src="../../images/michael.jpg" alt="Michael Gee's Profile Picture">
             <p>Coded by Michael Gee</p>
             <p>View source code <a href="https://github.com/michaelgee22/chat-box">here</a></p>
             <p>Social Media:</p>
@@ -129,7 +129,7 @@
 
           </div><!-- WELCOME DIV END -->
 
-          <div id="message-body" class="none">
+          <div id="message-body">
 
             <template is="dom-repeat" items="{{messages}}" as="message">
 
@@ -238,6 +238,7 @@
 
           this.$["welcome"].style.display = "none";
           this.$["message-body"].style.display = "flex";
+          this.$["message-input"].style.display = "flex";
         }
 
         if(e.currentTarget.textContent.replace(/\s+/g, '') === this.selectedThread){
@@ -284,6 +285,7 @@
 
           this.$["welcome"].style.display = "flex";
           this.$["message-body"].style.display = "none";
+          this.$["message-input"].style.display = "none";
         }
 
         if (!this.$.drawer.persistent) {

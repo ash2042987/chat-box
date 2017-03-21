@@ -9,6 +9,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 <!-- IRON ELEMENTS -->
 <link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
 <!-- POLYMERFIRE ELEMENTS -->
@@ -101,7 +102,10 @@
             <div id="social-media">
               <div id="section1">
 
-                <img src="../../images/social-media/email.png" alt="Email Icon">
+                <img id="email" src="../../images/social-media/email.png" alt="Email Icon" on-tap="openDialog">
+                <paper-dialog id="emailDialog" with-backdrop>
+                  <h2>michaelgee221@gmail.com</h2>
+                </paper-dialog>
 
                 <a href="https://www.linkedin.com/in/michael-gee/" target="_blank">
                   <img src="../../images/social-media/linkedin.png" alt="Linked In Icon">
@@ -117,7 +121,10 @@
                   <img src="../../images/social-media/twitter.png" alt="Twitter Icon">
                 </a>
 
-                <img src="../../images/social-media/skype.png" alt="Skype Icon">
+                <img id="skype" src="../../images/social-media/skype.png" alt="Skype Icon" on-tap="openDialog">
+                <paper-dialog id="skypeDialog" with-backdrop>
+                  <h2>michael.gee24</h2>
+                </paper-dialog>
 
                 <a href="https://github.com/michaelgee22" target="_blank">
                   <img id="github-img" src="../../images/social-media/github.svg" alt="Github Logo">
@@ -198,7 +205,7 @@
   </template>
 
   <script>
-    class CegmagChat extends Polymer.LegacyElementMixin(Polymer.Element) {
+    class CegmagChat extends Polymer.GestureEventListeners(Polymer.Element) {
 
       constructor(){
         super();
@@ -291,6 +298,12 @@
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
         }
+      }
+
+      openDialog(e){
+        var currentDialog = e.currentTarget.id;
+        currentDialog = currentDialog + "Dialog";
+        this.$[currentDialog].open();
       }
 
       _adjustScrollHeight(){

@@ -317,6 +317,7 @@
       }
 
       _signOut(){
+        this.$.drawer.close();
         window.dispatchEvent(new CustomEvent('sign-out'))
       }
     }

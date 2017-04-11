@@ -179,12 +179,15 @@
         background-color: #26C07A;
       }
 
+      /* MEDIA QUERIES */
+      /* PHONE */
       @media screen and (max-width: 760px) {
         #thread-list {
           display: none;
         }
         #messages{
           width: 100%;
+          width: -webkit-calc(100% - 0px);
           display: flex;
           flex-direction: column;
         }

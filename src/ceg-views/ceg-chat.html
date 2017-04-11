@@ -179,22 +179,18 @@
         </div>
 
         <iron-selector attr-for-selected="name" selected="[[selectedThread]]">
-
           <div name="General" class="thread-option" on-tap="threadChange">
             <iron-icon icon="ceg-icons:people"></iron-icon>
             General
           </div>
-
           <div name="Comments" class="thread-option" on-tap="threadChange">
             <iron-icon icon="ceg-icons:comment"></iron-icon>
             Comments
           </div>
-
           <div name="Feedback" class="thread-option" on-tap="threadChange">
             <iron-icon icon="ceg-icons:feedback"></iron-icon>
             Feedback
           </div>
-
           <div class="thread-option" on-tap="_signOut">
             <iron-icon icon="ceg-icons:arrow-back"></iron-icon>
             Sign Out
@@ -281,7 +277,7 @@
 
       checkKey(e) {
         if(e.keyCode === 13 || e.charCode === 13) {
-          this.addMessage(e);
+          this.addMessage();
         }
       }
 

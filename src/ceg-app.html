@@ -6,11 +6,11 @@
 <!-- PAPER ELEMENTS -->
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <!-- CUSTOM ELEMENTS -->
-  <!-- AUTH -->
-  <link rel="import" href="ceg-auth/ceg-auth.html">
-  <!-- VIEWS -->
-  <link rel="import" href="ceg-views/ceg-chat.html">
-  <link rel="import" href="ceg-views/ceg-login.html">
+<!-- AUTH -->
+<link rel="import" href="ceg-auth/ceg-auth.html">
+<!-- VIEWS -->
+<link rel="import" href="ceg-views/ceg-chat.html">
+<link rel="import" href="ceg-views/ceg-login.html">
 
 <dom-module id="ceg-app">
   <template>
@@ -65,7 +65,6 @@
 
   <script>
     class CegmagApp extends Polymer.Element {
-
       constructor() {
         super();
         //EVENT LISTENERS
@@ -77,14 +76,11 @@
     }
 
       static get is() { return 'ceg-app'; }
-
       static get properties() {
-
         return {
           signedIn: Boolean,
           user: Object
         }
-
       }
 
       onSignIn(){
@@ -107,8 +103,6 @@
           console.log(error)
         });
       }
-
-
     }
 
     window.customElements.define(CegmagApp.is, CegmagApp);

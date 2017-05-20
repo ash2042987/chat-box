@@ -12,20 +12,19 @@
   ],
   "extraDependencies": [
     "manifest.json",
-    "bower_components/webcomponentsjs/*.js",
-    "database.rules.json",
-    "firebase.json",
-    ".firebaserc",
-    "functions/**/*"
+    "bower_components/webcomponentsjs/*.js"
   ],
   "lint": {
     "rules": ["polymer-2"]
   },
-  "builds": [{
-      "bundle": true,
-      "addServiceWorker": true,
-      "js": {"minify": true},
-      "css": {"minify": true},
-      "html": {"minify": true}
-    }]
+  "builds": [
+    {
+      "preset": "es5-bundled",
+      "basePath": true
+    },
+    {
+      "preset": "es6-unbundled",
+      "basePath": true
+    }
+  ]
 }

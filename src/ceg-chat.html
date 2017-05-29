@@ -1,30 +1,312 @@
 <!-- IMPORTS -->
 <!-- POLYMER -->
-<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
 <!-- APP ELEMENTS -->
-<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
 <!-- PAPER ELEMENTS -->
-<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
-<link rel="import" href="../../bower_components/paper-tooltip/paper-tooltip.html">
-<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
+<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <!-- IRON ELEMENTS -->
-<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <!-- POLYMERFIRE ELEMENTS -->
-<link rel="import" href="../../bower_components/polymerfire/firebase-query.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-query.html">
 <!-- CUSTOM ELEMENTS -->
-<link rel="import" href="../ceg-icons/ceg-icons.html">
-<!-- STYLES -->
-<link rel="import" href="../ceg-styles/shared-styles.html">
-<link rel="import" href="../ceg-styles/chat-styles.html">
-
+<link rel="import" href="./ceg-icons.html">
 
 <dom-module id="ceg-chat">
   <template>
-    <style include="shared-styles"></style>
-    <style include="chat-styles"></style>
+    <style>
+    /* HEADINGS */
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+    }
+
+    h1 {
+      font-size: 3.2em;
+    }
+
+    h2 {
+      font-size: 2em;
+    }
+
+    h3 {
+      font-size: 1.8em;
+      font-weight: normal;
+    }
+
+    .paragraph {
+      font-size: 1.8em;
+      margin: 5px;
+    }
+
+    [hidden] {
+        display: none !important;
+    }
+
+    #profile-img {
+      width: 150px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    #chat-box {
+      width: 100%;
+      overflow: hidden;
+      height: 100vh;
+      background-color: var(--app-secondary-color);
+    }
+    #thread-list {
+      width: 29.85%;
+      float: left;
+      height: 100%;
+      background-color: var(--app-secondary-color);
+    }
+      #thread-userbox {
+        background-color: var(--app-primary-color);
+        color: white;
+        display: flex;
+        flex-direction: column;
+      }
+        #thread-userbox h2 {
+          margin: 0;
+          padding: 10px 0;
+          font-size: 2.2em;
+          text-align: center;
+        }
+        #thread-userbox img {
+          width: 100px;
+          border-radius: 50%;
+          display: flex;
+          align-self: center;
+          margin-bottom: 15px;
+        }
+      #thread-bar {
+        background-color: var(--app-primary-color);
+        color: white;
+        padding: 15px;
+        text-align: center;
+        margin-bottom: 15px;
+      }
+      .thread-option {
+        margin-bottom: 15px;
+        font-size: 1.8em;
+        padding: 5px;
+        text-align: center;
+        cursor: pointer;
+      }
+        .iron-selected {
+          background-color: var(--app-primary-color);
+          color: var(--app-secondary-color);
+        }
+      #home-bar {
+        font-size: 1.6em;
+      }
+        #home-button {
+          text-align: center;
+          padding: 15px;
+          cursor: pointer;
+        }
+
+    #messages {
+      width: 70%;
+      float: right;
+      display: flex;
+      flex-direction: column;
+      max-height: 100vh;
+      background-color: #eee;
+    }
+      #messages app-toolbar {
+        background-color: var(--app-primary-color);
+        color: var(--app-secondary-color);
+      }
+      #drawer-button {
+        visibility: hidden;
+      }
+    #message-body{
+      display: flex;
+      flex-direction: column-reverse;
+      height: calc(100vh - 100px);
+      overflow: auto;
+      display: none;
+    }
+      #message-body img {
+        width: 50px;
+        border-radius: 50%;
+      }
+      #message-body p {
+        font-size: 1.6em;
+        margin: 0;
+      }
+    #welcome {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: auto;
+    }
+      #login-button {
+        font-size: 2em;
+        background-color: #eee;
+        color: black;
+        border: 1px solid #111;
+        margin:10px 0 10px 0;
+        padding: 15px 50px 15px 50px;
+      }
+        #login-button img {
+          width: 25px;
+          padding-right: 5px;
+        }
+      #welcome p {
+        font-size: 1.6em;
+        margin: 5px;
+      }
+      #welcome a {
+        color: var(--app-primary-color);
+        text-decoration: none;
+      }
+      #welcome p a:hover {
+        color: red;
+        text-decoration: underline;
+      }
+      #social-media img {
+        margin: 5px;
+        width: 50px;
+        cursor: pointer;
+      }
+      paper-dialog h2 {
+        padding: 15px;
+      }
+    .message {
+      width: 100%;
+      padding: 5px 0 10px 0;
+      border-bottom: 1px solid #ccc;
+    }
+      .message img {
+        margin: 10px 25px 10px 15px;
+        max-width: 15%;
+        float: left;
+      }
+      .message-text {
+        max-width: 75%;
+        float: left;
+        position: relative;
+        background: #ccc;
+        padding: 10px;
+        color: #222;
+        border-radius: 3px;
+        margin-bottom: 15px;
+      }
+      .message-text::after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-top: 8px solid transparent;
+        border-bottom: 8px solid transparent;
+        border-right: 15px solid #ccc;
+        left: -11px;
+        bottom: 25px;
+      }
+
+    #message-input {
+      height: 100px;
+      display: flex;
+      border-top: 1px solid #ccc;
+      display: none;
+    }
+    #message-input paper-textarea{
+      width: 90%;
+      float: left;
+      overflow-x: hidden;
+      overflow-y: auto;
+      margin-left: 2px;
+      margin-top: 15px;
+      --paper-input-container-focus-color: var(--app-primary-color);
+    }
+    #message-input paper-button {
+      border-radius: 50%;
+      height: 65px;
+      padding: 20px;
+      margin-top: 15px;
+      margin-left: 5px;
+      color: var(--app-secondary-color);
+      background-color: var(--app-primary-color);
+    }
+
+    /* MEDIA QUERIES */
+    /* PHONE */
+    @media screen and (max-width: 760px) {
+      #thread-list {
+        display: none;
+      }
+      #messages{
+        width: 100%;
+        width: -webkit-calc(100% - 0px);
+        display: flex;
+        flex-direction: column;
+      }
+        #drawer-button {
+          visibility: visible;
+        }
+        #signout-button {
+          display: none;
+        }
+    }
+
+    @media screen
+      and (max-device-width: 736px)
+      and (-webkit-min-device-pixel-ratio: 2)
+      and (orientation: landscape) {
+        #welcome {
+          display: block;
+          text-align: center;
+          margin-top: 15px;
+        }
+    }
+
+    /* MESSAGE BODY MEDIA QUERIES */
+    @media screen and (max-width: 475px) {
+      .message-text {
+        padding: 5px 5px 10px 5px;
+      }
+      .message img {
+        margin: 0;
+      }
+        .message img {
+          margin-right: 15px;
+        }
+      .message-text::after {
+        display: none;
+      }
+
+      #welcome {
+        display: block;
+        text-align: center;
+        margin-top: 25px;
+      }
+
+      #welcome h1 {
+        font-size: 2.6em;
+      }
+
+      #message-input paper-button {
+        height: 25px;
+        margin-top: 25px;
+      }
+
+      paper-dialog h2 {
+        padding: 5px;
+        font-size: 1.3em;
+      }
+    }
+    </style>
 
     <!-- FIREBASE QUERY -->
     <firebase-query
@@ -94,6 +376,10 @@
 
             <h1>Welcome to Chat-Box</h1>
             <img id="profile-img" src="../../images/chat-box.jpg" alt="Michael Gee's Profile Picture">
+            <paper-button id="login-button" on-tap="_signIn">
+              <img src="../images/social-media/google-icon.png" alt="Google Logo">
+              Sign In
+            </paper-button>
             <p>Built with Polymer 2 and Firebase.</p>
             <p>Coded by Michael Gee</p>
             <p>View source code <a href="https://github.com/michaelgee22/chat-box">here</a></p>
@@ -310,6 +596,10 @@
 
       _toggleDrawer(){
         this.$.drawer.toggle();
+      }
+
+      _signIn(){
+        window.dispatchEvent(new CustomEvent('sign-in'))
       }
 
       _signOut(){

@@ -7,14 +7,18 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <!-- CUSTOM ELEMENTS -->
 <!-- AUTH -->
-<link rel="import" href="ceg-auth/ceg-auth.html">
+<link rel="import" href="ceg-auth.html">
 <!-- VIEWS -->
-<link rel="import" href="ceg-views/ceg-chat.html">
-<link rel="import" href="ceg-views/ceg-login.html">
+<link rel="import" href="ceg-chat.html">
 
 <dom-module id="ceg-app">
   <template>
     <style>
+      :host {
+        --app-primary-color: #26C07A; /* green*/
+        --app-secondary-color: #ffffff; /* white */
+      }
+
       .overlay {
         position: absolute;
         top: 0;
@@ -44,16 +48,11 @@
         signed-in="{{signedIn}}">
     </firebase-auth>
 
-    <template is="dom-if" if="{{!user}}">
-      <ceg-login></ceg-login>
-    </template>
-
-    <template is="dom-if" if="{{user}}">
-      <ceg-chat
-        user-name="[[user.displayName]]"
-        user-image="[[user.photoURL]]"
-      ></ceg-chat>
-    </template>
+    <ceg-chat
+      user="[[user]]"
+      user-name="[[user.displayName]]"
+      user-image="[[user.photoURL]]"
+    ></ceg-chat>
 
     <!-- -
     <div class="overlay">

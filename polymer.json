@@ -1,10 +1,6 @@
 {
   "entrypoint": "index.html",
   "shell": "src/ceg-app.html",
-  "fragments": [
-    "src/ceg-views/ceg-chat.html",
-    "src/ceg-views/ceg-login.html"
-  ],
   "sources": [
     "src/**/*",
     "images/**/*",
@@ -19,12 +15,10 @@
   },
   "builds": [
     {
-      "preset": "es5-bundled",
-      "basePath": true
+      "preset": "es5-bundled"
     },
     {
-      "preset": "es6-unbundled",
-      "basePath": true
+      "preset": "es6-unbundled"
     }
   ]
 }

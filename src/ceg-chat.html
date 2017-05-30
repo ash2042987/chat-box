@@ -24,29 +24,23 @@
     h1, h2, h3, h4, h5, h6 {
       margin: 0;
     }
-
     h1 {
       font-size: 3.2em;
     }
-
     h2 {
       font-size: 2em;
     }
-
     h3 {
       font-size: 1.8em;
       font-weight: normal;
     }
-
     .paragraph {
       font-size: 1.8em;
       margin: 5px;
     }
-
     [hidden] {
         display: none !important;
     }
-
     #profile-img {
       width: 150px;
       border-radius: 50%;
@@ -285,22 +279,18 @@
       .message-text::after {
         display: none;
       }
-
       #welcome {
         display: block;
         text-align: center;
         margin-top: 25px;
       }
-
       #welcome h1 {
         font-size: 2.6em;
       }
-
       #message-input paper-button {
         height: 25px;
         margin-top: 25px;
       }
-
       paper-dialog h2 {
         padding: 5px;
         font-size: 1.3em;
@@ -338,25 +328,20 @@
           </div>
 
           <div id="thread-options">
-
             <iron-selector attr-for-selected="name" selected="[[selectedThread]]">
-
               <div name="General" class="thread-option" on-tap="threadChange">
                 <iron-icon icon="ceg-icons:people"></iron-icon>
                 General
               </div>
-
               <div name="Comments" class="thread-option" on-tap="threadChange">
                 <iron-icon icon="ceg-icons:comment"></iron-icon>
                 Comments
               </div>
-
               <div name="Feedback" class="thread-option" on-tap="threadChange">
                 <iron-icon icon="ceg-icons:feedback"></iron-icon>
                 Feedback
               </div>
             </iron-selector>
-
           </div>
 
         </div>
@@ -387,16 +372,13 @@
 
             <div id="social-media">
               <div id="section1">
-
                 <img id="email" src="../../images/social-media/email.png" alt="Email Icon" on-tap="openDialog">
                 <paper-dialog id="emailDialog" with-backdrop>
                   <h2>michaelgee221@gmail.com</h2>
                 </paper-dialog>
-
                 <a href="https://www.linkedin.com/in/michael-gee/" target="_blank">
                   <img src="../../images/social-media/linkedin.png" alt="Linked In Icon">
                 </a>
-
                 <a href="https://www.facebook.com/michael.gee.167" target="_blank">
                   <img src="../../images/social-media/facebook.png" alt="Facebook Icon">
                 </a>
@@ -406,12 +388,10 @@
                 <a href="https://twitter.com/michaelgee7" target="_blank">
                   <img src="../../images/social-media/twitter.png" alt="Twitter Icon">
                 </a>
-
                 <img id="skype" src="../../images/social-media/skype.png" alt="Skype Icon" on-tap="openDialog">
                 <paper-dialog id="skypeDialog" with-backdrop>
                   <h2>michael.gee24</h2>
                 </paper-dialog>
-
                 <a href="https://github.com/michaelgee22" target="_blank">
                   <img id="github-img" src="../../images/social-media/github.svg" alt="Github Logo">
                 </a>
@@ -425,13 +405,11 @@
           <div id="message-body">
 
             <template is="dom-repeat" items="{{messages}}" as="message">
-
               <div class="message">
                 <img src="[[message.image]]" alt="[[message.user]]'s' Profile Image">
                 <p style="font-size: 1.3em">[[message.user]]</p>
                 <p class="message-text">[[message.content]]</p>
               </div>
-
             </template>
           </div>
 
@@ -608,7 +586,7 @@
       }
     }
 
-
     window.customElements.define(CegmagChat.is, CegmagChat);
+    
   </script>
 </dom-module>

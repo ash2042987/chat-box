@@ -9,9 +9,9 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <!-- IRON ELEMENTS -->
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <!-- POLYMERFIRE ELEMENTS -->
 <link rel="import" href="../bower_components/polymerfire/firebase-query.html">
 <!-- CUSTOM ELEMENTS -->
@@ -21,7 +21,7 @@
   <template>
     <style>
     /* HEADINGS */
-    h1, h2, h3, h4, h5, h6 {
+    h1, h2, h3 {
       margin: 0;
     }
     h1 {
@@ -46,7 +46,6 @@
       border-radius: 50%;
       margin-bottom: 10px;
     }
-
     #chat-box {
       width: 100%;
       overflow: hidden;
@@ -67,8 +66,8 @@
       }
         #thread-userbox h2 {
           margin: 0;
-          padding: 10px 0;
-          font-size: 2.2em;
+          padding: 14px 0;
+          font-weight: normal;
           text-align: center;
         }
         #thread-userbox img {
@@ -76,7 +75,11 @@
           border-radius: 50%;
           display: flex;
           align-self: center;
-          margin-bottom: 15px;
+          margin-bottom: 14px;
+        }
+        #welcome-user {
+          text-align: center;
+          margin: 5px 0 10px 0;
         }
       #thread-bar {
         background-color: var(--app-primary-color);
@@ -104,22 +107,17 @@
           padding: 15px;
           cursor: pointer;
         }
-
+    app-toolbar {
+      background-color: var(--app-primary-color);
+      color: var(--app-secondary-color);
+      border-left: 1px solid #eee;
+    }
     #messages {
-      width: 70%;
-      float: right;
       display: flex;
       flex-direction: column;
       max-height: 100vh;
       background-color: #eee;
     }
-      #messages app-toolbar {
-        background-color: var(--app-primary-color);
-        color: var(--app-secondary-color);
-      }
-      #drawer-button {
-        visibility: hidden;
-      }
     #message-body{
       display: flex;
       flex-direction: column-reverse;
@@ -136,18 +134,14 @@
         margin: 0;
       }
     #welcome {
-      width: 100%;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      overflow: auto;
     }
       #login-button {
         font-size: 2em;
-        background-color: #eee;
-        color: black;
         border: 1px solid #111;
         margin:10px 0 10px 0;
         padding: 15px 50px 15px 50px;
@@ -172,9 +166,6 @@
         margin: 5px;
         width: 50px;
         cursor: pointer;
-      }
-      paper-dialog h2 {
-        padding: 15px;
       }
     .message {
       width: 100%;
@@ -208,30 +199,32 @@
         left: -11px;
         bottom: 25px;
       }
-
     #message-input {
       height: 100px;
       display: flex;
+      justify-content: center;
+      align-items: center;
       border-top: 1px solid #ccc;
+      overflow-y: auto;
       display: none;
     }
     #message-input paper-textarea{
       width: 90%;
+      margin-left: auto;
+      margin-right: auto;
       float: left;
-      overflow-x: hidden;
-      overflow-y: auto;
-      margin-left: 2px;
-      margin-top: 15px;
       --paper-input-container-focus-color: var(--app-primary-color);
     }
     #message-input paper-button {
+      margin-left: auto;
+      margin-right: auto;
+      padding: 10px;
       border-radius: 50%;
-      height: 65px;
-      padding: 20px;
-      margin-top: 15px;
-      margin-left: 5px;
       color: var(--app-secondary-color);
       background-color: var(--app-primary-color);
+    }
+    #drawer-button {
+      display: none;
     }
 
     /* MEDIA QUERIES */
@@ -240,33 +233,13 @@
       #thread-list {
         display: none;
       }
-      #messages{
-        width: 100%;
-        width: -webkit-calc(100% - 0px);
-        display: flex;
-        flex-direction: column;
+      #drawer-button {
+        display: block;
       }
-        #drawer-button {
-          visibility: visible;
-        }
-        #signout-button {
-          display: none;
-        }
-    }
+      #signout-button {
+        display: none;
+      }
 
-    @media screen
-      and (max-device-width: 736px)
-      and (-webkit-min-device-pixel-ratio: 2)
-      and (orientation: landscape) {
-        #welcome {
-          display: block;
-          text-align: center;
-          margin-top: 15px;
-        }
-    }
-
-    /* MESSAGE BODY MEDIA QUERIES */
-    @media screen and (max-width: 475px) {
       .message-text {
         padding: 5px 5px 10px 5px;
       }
@@ -280,23 +253,27 @@
         display: none;
       }
       #welcome {
-        display: block;
-        text-align: center;
         margin-top: 25px;
+        justify-content: flex-start;
       }
       #welcome h1 {
         font-size: 2.6em;
       }
-      #message-input paper-button {
-        height: 25px;
-        margin-top: 25px;
-      }
-      paper-dialog h2 {
-        padding: 5px;
-        font-size: 1.3em;
-      }
+    }
+
+    @media screen
+      and (max-device-width: 736px)
+      and (-webkit-min-device-pixel-ratio: 2)
+      and (orientation: landscape) {
+        #welcome {
+          display: block;
+          text-align: center;
+          margin-top: 15px;
+        }
     }
     </style>
+
+    <iron-media-query query="max-width: 767px" query-matches="{{mobileScreen}}"></iron-media-query>
 
     <!-- FIREBASE QUERY -->
     <firebase-query
@@ -309,159 +286,121 @@
     <!-- CHAT-BOX -->
       <div id="chat-box">
         <!-- THREAD LIST CONTAINER -->
-        <div id="thread-list">
-
-          <div id="thread-userbox">
-            <h2>Welcome [[userName]]!</h2>
-            <img src="[[userImage]]" alt="[[userName]]'s Profile Image'">
-          </div>
-
-          <div id="home-bar">
-            <div id="home-button" on-tap="triggerWelcomePage">
-              <iron-icon icon="ceg-icons:home"></iron-icon>
-              Home
+        <div id="thread-list" hidden$="[[!_shouldRenderThreadList]]">
+          <dom-if if="[[_shouldRenderThreadList]]">
+            <div id="thread-userbox">
+              <h2>Chat-Box</h2>
+              <img src="[[userImage]]" alt="[[userName]]'s Profile Image'">
+              <h3 id="welcome-user">Welcome, [[userName]]!</h3>
             </div>
-          </div>
-
-          <div id="thread-bar">
-            <h3>Threads</h3>
-          </div>
-
-          <div id="thread-options">
-            <iron-selector attr-for-selected="name" selected="[[selectedThread]]">
-              <div name="General" class="thread-option" on-tap="threadChange">
-                <iron-icon icon="ceg-icons:people"></iron-icon>
-                General
+            <div id="home-bar">
+              <div id="home-button" on-tap="_triggerWelcomeView">
+                <iron-icon icon="ceg-icons:home"></iron-icon>
+                Home
               </div>
-              <div name="Comments" class="thread-option" on-tap="threadChange">
-                <iron-icon icon="ceg-icons:comment"></iron-icon>
-                Comments
-              </div>
-              <div name="Feedback" class="thread-option" on-tap="threadChange">
-                <iron-icon icon="ceg-icons:feedback"></iron-icon>
-                Feedback
-              </div>
-            </iron-selector>
-          </div>
-
+            </div>
+            <div id="thread-bar">
+              <h3>Threads</h3>
+            </div>
+            <div id="thread-options">
+              <iron-selector attr-for-selected="name" selected="[[selectedThread]]">
+                <div name="General" class="thread-option" on-tap="_threadChange">
+                  <iron-icon icon="ceg-icons:people"></iron-icon>
+                  General
+                </div>
+                <div name="Comments" class="thread-option" on-tap="_threadChange">
+                  <iron-icon icon="ceg-icons:comment"></iron-icon>
+                  Comments
+                </div>
+                <div name="Feedback" class="thread-option" on-tap="_threadChange">
+                  <iron-icon icon="ceg-icons:feedback"></iron-icon>
+                  Feedback
+                </div>
+              </iron-selector>
+            </div>
+          </dom-if>
         </div>
 
         <div id="messages">
-
           <app-toolbar>
             <div main-title>Chat-Box - [[selectedThread]]</div>
             <!-- DRAWER ICON -->
-            <paper-icon-button id="drawer-button" on-tap="_toggleDrawer" icon="ceg-icons:menu"></paper-icon-button>
+            <paper-icon-button id="drawer-button" on-tap="_toggleDrawer" icon="ceg-icons:menu" hidden$="[[!signedIn]]"></paper-icon-button>
             <!-- SIGN OUT ICON -->
-            <paper-icon-button id="signout-button" on-tap="_signOut" icon="ceg-icons:backspace"></paper-icon-button>
+            <paper-icon-button id="signout-button" on-tap="_signOut" icon="ceg-icons:backspace" hidden$="[[!signedIn]]"></paper-icon-button>
             <paper-tooltip for="signout-button" offset="0">Sign Out</paper-tooltip>
           </app-toolbar>
 
           <div id="welcome">
-
             <h1>Welcome to Chat-Box</h1>
-            <img id="profile-img" src="../../images/chat-box.jpg" alt="Michael Gee's Profile Picture">
-            <paper-button id="login-button" on-tap="_signIn">
-              <img src="../images/social-media/google-icon.png" alt="Google Logo">
+            <img id="profile-img" src="../images/chat-box.jpg" alt="Michael Gee's Profile Picture">
+            <paper-button id="login-button" on-tap="_signIn" hidden$="[[signedIn]]">
+              <img src="../images/google-icon.png" alt="Google Logo">
               Sign In
             </paper-button>
             <p>Built with Polymer 2 and Firebase.</p>
-            <p>Coded by Michael Gee</p>
+            <p>Hand Coded by Michael Gee</p>
             <p>View source code <a href="https://github.com/michaelgee22/chat-box">here</a></p>
-            <p>Social Media:</p>
-
-            <div id="social-media">
-              <div id="section1">
-                <img id="email" src="../../images/social-media/email.png" alt="Email Icon" on-tap="openDialog">
-                <paper-dialog id="emailDialog" with-backdrop>
-                  <h2>michaelgee221@gmail.com</h2>
-                </paper-dialog>
-                <a href="https://www.linkedin.com/in/michael-gee/" target="_blank">
-                  <img src="../../images/social-media/linkedin.png" alt="Linked In Icon">
-                </a>
-                <a href="https://www.facebook.com/michael.gee.167" target="_blank">
-                  <img src="../../images/social-media/facebook.png" alt="Facebook Icon">
-                </a>
-              </div>
-
-              <div id="section2">
-                <a href="https://twitter.com/michaelgee7" target="_blank">
-                  <img src="../../images/social-media/twitter.png" alt="Twitter Icon">
-                </a>
-                <img id="skype" src="../../images/social-media/skype.png" alt="Skype Icon" on-tap="openDialog">
-                <paper-dialog id="skypeDialog" with-backdrop>
-                  <h2>michael.gee24</h2>
-                </paper-dialog>
-                <a href="https://github.com/michaelgee22" target="_blank">
-                  <img id="github-img" src="../../images/social-media/github.svg" alt="Github Logo">
-                </a>
-              </div>
-            </div><!-- SOCIAL MEDIA DIV END -->
-
             <p>Website: <a href="https://www.michaelgee.me/" target="_blank">https://www.michaelgee.me/</a></p>
-
           </div><!-- WELCOME DIV END -->
 
           <div id="message-body">
-
-            <template is="dom-repeat" items="{{messages}}" as="message">
-              <div class="message">
-                <img src="[[message.image]]" alt="[[message.user]]'s' Profile Image">
-                <p style="font-size: 1.3em">[[message.user]]</p>
-                <p class="message-text">[[message.content]]</p>
-              </div>
-            </template>
+            <dom-repeat items="{{messages}}" as="message">
+              <template>
+                <div class="message">
+                  <img src="[[message.image]]" alt="[[message.user]]'s' Profile Image">
+                  <p style="font-size: 1.3em">[[message.user]]</p>
+                  <p class="message-text">[[message.content]]</p>
+                </div>
+              </template>
+            </dom-repeat>
           </div>
 
           <div id="message-input">
-            <paper-textarea id="user-message" on-keyup="checkKey"></paper-textarea>
-              <paper-button on-tap="addMessage">
+            <paper-textarea id="user-message" label="Type Message Here:" on-keyup="_checkKey"></paper-textarea>
+              <paper-button on-tap="_addMessage">
                 <iron-icon icon="ceg-icons:send"></iron-icon>
               </paper-button>
           </div>
-
-        </div>
-
+        </div><!-- MESSAGES DIV END -->
       </div><!-- CHAT BOX DIV END -->
 
       <!-- DRAWER -->
-      <app-drawer id="drawer" swipe-open align="right" slot="drawer">
-        <div id="thread-userbox">
-          <h2>Welcome [[userName]]!</h2>
-          <img src="[[userImage]]" alt="[[userName]]'s Profile Image'">
-        </div>
-
-        <div id="home-bar">
-          <div id="home-button" on-tap="triggerWelcomePage">
-            <iron-icon icon="ceg-icons:home"></iron-icon>
-            Home
+      <dom-if if="[[_shouldRenderDrawer]]">
+        <app-drawer id="drawer" align="right" slot="drawer">
+          <div id="thread-userbox">
+            <h2>Welcome [[userName]]!</h2>
+            <img src="[[userImage]]" alt="[[userName]]'s Profile Image'">
           </div>
-        </div>
-
-        <div id="thread-bar">
-          <h3>Threads</h3>
-        </div>
-
-        <iron-selector attr-for-selected="name" selected="[[selectedThread]]">
-          <div name="General" class="thread-option" on-tap="threadChange">
-            <iron-icon icon="ceg-icons:people"></iron-icon>
-            General
+          <div id="home-bar">
+            <div id="home-button" on-tap="_triggerWelcomeView">
+              <iron-icon icon="ceg-icons:home"></iron-icon>
+              Home
+            </div>
           </div>
-          <div name="Comments" class="thread-option" on-tap="threadChange">
-            <iron-icon icon="ceg-icons:comment"></iron-icon>
-            Comments
+          <div id="thread-bar">
+            <h3>Threads</h3>
           </div>
-          <div name="Feedback" class="thread-option" on-tap="threadChange">
-            <iron-icon icon="ceg-icons:feedback"></iron-icon>
-            Feedback
-          </div>
-          <div class="thread-option" on-tap="_signOut">
-            <iron-icon icon="ceg-icons:arrow-back"></iron-icon>
-            Sign Out
-          </div>
-        </iron-selector>
-      </app-drawer>
-
+          <iron-selector attr-for-selected="name" selected="[[selectedThread]]">
+            <div name="General" class="thread-option" on-tap="_threadChange">
+              <iron-icon icon="ceg-icons:people"></iron-icon>
+              General
+            </div>
+            <div name="Comments" class="thread-option" on-tap="_threadChange">
+              <iron-icon icon="ceg-icons:comment"></iron-icon>
+              Comments
+            </div>
+            <div name="Feedback" class="thread-option" on-tap="_threadChange">
+              <iron-icon icon="ceg-icons:feedback"></iron-icon>
+              Feedback
+            </div>
+            <div class="thread-option" on-tap="_signOut">
+              <iron-icon icon="ceg-icons:arrow-back"></iron-icon>
+              Sign Out
+            </div>
+          </iron-selector>
+        </app-drawer>
+      </dom-if>
   </template>
 
   <script>
@@ -478,30 +417,41 @@
 
       static get is() { return 'ceg-chat'; }
 
-      static get properties() {
-
-        return {
+      static get properties() { return {
           selectedThread: {
             type: String,
             value: "Welcome!"
           },
-          messages: {
-            type: Object
-            //observer: "_dataChanged"
+
+          welcomeViewActive: {
+            type: Boolean,
+            value: true
           },
+
           userName: String,
           userImage: String,
-          welcomeHidden: {
-            type: Boolean,
-            value: false
-          }
-        }
+          signedIn: Boolean,
 
+          _shouldRenderDrawer: {
+            computed: '_computeShouldRenderDrawer(mobileScreen)'
+          },
+
+          _shouldRenderThreadList: {
+            computed: '_computeShouldRenderThreadList(desktopAndTabletScreen, signedIn)'
+          }
+      }}
+
+      _computeShouldRenderDrawer(mobileScreen) {
+        return mobileScreen;
       }
 
-      threadChange(e) {
-        if(this.welcomeHidden === false){
-          this.welcomeHidden = true;
+      _computeShouldRenderThreadList(mobileScreen, user) {
+        return !mobileScreen && user;
+      }
+
+      _threadChange(e) {
+        if(this.welcomeViewActive === true){
+          this.welcomeViewActive = false;
 
           this.$["welcome"].style.display = "none";
           this.$["message-body"].style.display = "flex";
@@ -520,7 +470,7 @@
         }
       }
 
-      addMessage() {
+      _addMessage() {
         var userInput = this.$["user-message"].value.replace(/\s+/g, '')
 
         if( userInput === "" || userInput === null ){
@@ -539,15 +489,15 @@
         this.$["user-message"].value = null;
       }
 
-      checkKey(e) {
+      _checkKey(e) {
         if(e.keyCode === 13 || e.charCode === 13) {
-          this.addMessage();
+          this._addMessage();
         }
       }
 
-      triggerWelcomePage(){
-        if(this.welcomeHidden === true){
-          this.welcomeHidden = false;
+      _triggerWelcomeView(){
+        if(this.welcomeViewActive === false){
+          this.welcomeViewActive = true;
           this.selectedThread = "Welcome!";
 
           this.$["welcome"].style.display = "flex";
@@ -560,14 +510,7 @@
         }
       }
 
-      openDialog(e){
-        var currentDialog = e.currentTarget.id;
-        currentDialog = currentDialog + "Dialog";
-        this.$[currentDialog].open();
-      }
-
       _adjustScrollHeight(){
-        console.log("adjusted");
         var messageBody = this.$['message-body'];
         messageBody.scrollTop = messageBody.scrollHeight;
       }
@@ -577,6 +520,7 @@
       }
 
       _signIn(){
+        this.$.drawer.close();
         window.dispatchEvent(new CustomEvent('sign-in'))
       }
 
@@ -587,6 +531,6 @@
     }
 
     window.customElements.define(CegmagChat.is, CegmagChat);
-    
+
   </script>
 </dom-module>

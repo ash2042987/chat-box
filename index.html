@@ -18,12 +18,12 @@
 
     <!-- Add to homescreen for Chrome on Android. Fallback for manifest.json -->
     <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="MG-Portfolio">
+    <meta name="application-name" content="Chat-Box">
 
     <!-- Add to homescreen for Safari on iOS -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="MG-Portfolio">
+    <meta name="apple-mobile-web-app-title" content="Chat-Box">
 
     <!-- Homescreen icons -->
     <link rel="apple-touch-icon" sizes="72x72" href="/images/manifest/icon-72x72.png">
@@ -36,6 +36,59 @@
     <meta name="msapplication-TileColor" content="#3f51b5">
     <meta name="msapplication-tap-highlight" content="no">
 
+    <!-- Add any global styles for body, document, etc. -->
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Roboto', 'Noto', sans-serif;
+        line-height: 1.5;
+        font-size: 62.5%;
+      }
+      ceg-app[unresolved] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      @keyframes spinner {
+        to {transform: rotate(360deg);}
+      }
+
+      .spinner:before {
+        content: '';
+        box-sizing: border-box;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 30px;
+        height: 30px;
+        margin-top: -15px;
+        margin-left: -15px;
+        border-radius: 50%;
+        border: 1px solid #26C07A;
+        border-top-color: white;
+        animation: spinner .6s linear infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <ceg-app unresolved>
+      <div class="spinner"></div>
+    </ceg-app>
+    <noscript>
+      Please enable JavaScript to view this website.
+    </noscript>
+
+    <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
+    <script src="./bower_components/webcomponentsjs/webcomponents-loader.js"></script>
+    <!-- Load your application shell -->
+    <link rel="import" href="/src/ceg-app.html">
+
     <!-- Load and register pre-caching Service Worker -->
     <script>
       if ('serviceWorker' in navigator) {
@@ -44,25 +97,5 @@
         });
       }
     </script>
-
-    <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
-    <script src="./bower_components/webcomponentsjs/webcomponents-loader.js"></script>
-
-    <!-- Load your application shell -->
-    <link rel="import" href="/src/ceg-app.html">
-
-    <!-- Add any global styles for body, document, etc. -->
-    <style>
-      body {
-        margin: 0;
-        font-family: 'Roboto', 'Noto', sans-serif;
-        line-height: 1.5;
-        font-size: 62.5%;
-        background-color: #26C07A;
-      }
-    </style>
-  </head>
-  <body>
-    <ceg-app></ceg-app>
   </body>
 </html>

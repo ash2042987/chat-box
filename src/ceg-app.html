@@ -3,8 +3,6 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <!-- POLYMERFIRE -->
 <link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
-<!-- PAPER ELEMENTS -->
-<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <!-- CUSTOM ELEMENTS -->
 <!-- AUTH -->
 <link rel="import" href="./ceg-auth.html">
@@ -18,24 +16,6 @@
         --app-primary-color: #26C07A; /* green*/
         --app-secondary-color: #ffffff; /* white */
       }
-
-      .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background: #3385ff;
-      }
-        .overlay paper-spinner {
-          background: #fff;
-          padding: 25px;
-          border-radius: 50%;
-        }
     </style>
 
     <!-- FIREBASE -->
@@ -49,16 +29,10 @@
     </firebase-auth>
 
     <ceg-chat
-      user="[[user]]"
+      signed-in="[[signedIn]]"
       user-name="[[user.displayName]]"
-      user-image="[[user.photoURL]]"
-    ></ceg-chat>
-
-    <!-- -
-    <div class="overlay">
-      <paper-spinner active></paper-spinner>
-    </div>
-  -->
+      user-image="[[user.photoURL]]">
+    </ceg-chat>
 
   </template>
 
@@ -72,6 +46,11 @@
 
         this.onSignOut = this.onSignOut.bind(this);
         window.addEventListener('sign-out', this.onSignOut);
+    }
+
+    ready() {
+      super.ready();
+      this.removeAttribute('unresolved');
     }
 
       static get is() { return 'ceg-app'; }

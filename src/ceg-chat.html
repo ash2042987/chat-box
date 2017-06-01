@@ -7,8 +7,8 @@
 <!-- PAPER ELEMENTS -->
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <!-- IRON ELEMENTS -->
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
@@ -200,19 +200,17 @@
         bottom: 25px;
       }
     #message-input {
-      height: 100px;
+      min-height: 100px;
       display: flex;
-      justify-content: center;
       align-items: center;
       border-top: 1px solid #ccc;
-      overflow-y: auto;
+      overflow-y: hidden;
       display: none;
     }
-    #message-input paper-textarea{
+    paper-textarea{
       width: 90%;
       margin-left: auto;
       margin-right: auto;
-      float: left;
       --paper-input-container-focus-color: var(--app-primary-color);
     }
     #message-input paper-button {
@@ -281,6 +279,7 @@
       path="/[[selectedThread]]/messages"
       data="{{messages}}"
       order-by-child="timestamp"
+      limit-to-first="50"
     ></firebase-query>
 
     <!-- CHAT-BOX -->
@@ -339,8 +338,7 @@
               Sign In
             </paper-button>
             <p>Built with Polymer 2 and Firebase.</p>
-            <p>Hand Coded by Michael Gee</p>
-            <p>View source code <a href="https://github.com/michaelgee22/chat-box">here</a></p>
+            <p>Michael Gee</p>
             <p>Website: <a href="https://www.michaelgee.me/" target="_blank">https://www.michaelgee.me/</a></p>
           </div><!-- WELCOME DIV END -->
 
@@ -357,7 +355,8 @@
           </div>
 
           <div id="message-input">
-            <paper-textarea id="user-message" label="Type Message Here:" on-keyup="_checkKey"></paper-textarea>
+            <paper-textarea id="user-message" label="Message: (Max Characters: 500 - [[characterCount]])" charCounter=true maxlength="500" on-keyup="_checkKey">
+            </paper-textarea>
               <paper-button on-tap="_addMessage">
                 <iron-icon icon="ceg-icons:send"></iron-icon>
               </paper-button>
@@ -428,6 +427,11 @@
             value: true
           },
 
+          characterCount: {
+            type: Number,
+            value: 0
+          },
+
           userName: String,
           userImage: String,
           signedIn: Boolean,
@@ -490,6 +494,8 @@
       }
 
       _checkKey(e) {
+        this.characterCount = this.$["user-message"].value.length;
+
         if(e.keyCode === 13 || e.charCode === 13) {
           this._addMessage();
         }

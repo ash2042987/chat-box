@@ -1,9 +1,9 @@
 {
   "name": "Chat-Box",
   "short_name": "Chat-Box",
-  "theme_color": "#2196f3",
-  "background_color": "#2196f3",
-  "display": "fullscreen",
+  "theme_color": "#26C07A",
+  "background_color": "#26C07A",
+  "display": "standalone",
   "Scope": "/",
   "start_url": "/",
   "icons": [
